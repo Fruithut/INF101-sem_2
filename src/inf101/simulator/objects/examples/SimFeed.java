@@ -3,6 +3,8 @@ package inf101.simulator.objects.examples;
 import java.util.function.Consumer;
 
 import inf101.simulator.Direction;
+import inf101.simulator.GraphicsHelper;
+import inf101.simulator.MediaHelper;
 import inf101.simulator.Position;
 import inf101.simulator.objects.AbstractSimObject;
 import inf101.simulator.objects.IEdibleObject;
@@ -29,6 +31,11 @@ public class SimFeed extends AbstractSimObject implements IEdibleObject {
 	@Override
 	public void draw(GraphicsContext context) {
 		super.draw(context);
+		
+		//TODO
+		//Placeholder for other graphics later
+		//context.drawImage(MediaHelper.getImage("apple-256.png"),0,0,getWidth(),getHeight());
+		
 		context.setFill(Color.CHOCOLATE);
 		context.fillOval(0, 0, getWidth(), getHeight());
 	}

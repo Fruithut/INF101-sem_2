@@ -8,7 +8,7 @@ import org.junit.Test;
 import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.SimMain;
-import inf101.simulator.objects.examples.SimAnimal;
+import inf101.simulator.objects.SimAnimal;
 import inf101.simulator.objects.examples.SimFeed;
 
 public class SimAnimalBestFoodTest {

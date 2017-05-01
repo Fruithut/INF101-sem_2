@@ -237,4 +237,21 @@ public class Direction {
 		return new Direction(a * (1.00 - percent / 100.0) + b * (percent / 100.0));
 	}
 
+	/**
+	 * Finds the angle between two directions and returns the smallest one
+     * in regards to the clockwise and counterclockwise angle.
+     * 
+	 * @param other Direction from an object different from 'this'
+	 * @return Returns the angle between the direction of 'this' object and
+     * the direction of 'other'
+	 */
+	public double angleDifference(Direction other) {
+        double a = angleDeg, b = other.toAngle(), 
+                clockwiseResult = (a - b + 360) % 360,
+                counterClockwiseResult = (b - a + 360) % 360;
+        //TODO: REMOVE PRINTS LATER (ONLY FOR TESTING)
+        /*System.out.println("-->" + clockwiseResult);
+        System.out.println("<--" + counterClockwiseResult);*/
+        return Math.min(clockwiseResult, counterClockwiseResult);
+	}
 }

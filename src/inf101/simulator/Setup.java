@@ -1,7 +1,7 @@
 package inf101.simulator;
 
 import inf101.simulator.objects.examples.Blob;
-import inf101.simulator.objects.examples.SimAnimal;
+import inf101.simulator.objects.SimAnimal;
 import inf101.simulator.objects.examples.SimFeed;
 import inf101.simulator.objects.examples.SimRepellant;
 
