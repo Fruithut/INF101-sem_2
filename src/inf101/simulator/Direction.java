@@ -241,8 +241,9 @@ public class Direction {
 	 * Finds the angle between two directions and returns the smallest one
      * in regards to the clockwise and counterclockwise angle.
      * 
-	 * @param other Direction from an object different from 'this'
-	 * @return Returns the angle between the direction of 'this' object and
+	 * @param other Direction of an object (or direction to an object when method is used in 
+     *              sync with 'directionTo'-method)
+	 * @return Returns the angle-difference between the direction of 'this' object and
      * the direction of 'other'
 	 */
 	public double angleDifference(Direction other) {
