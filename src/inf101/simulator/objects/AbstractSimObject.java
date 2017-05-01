@@ -138,7 +138,7 @@ public abstract class AbstractSimObject implements ISimObject {
 			context.save();
 			double width = 10;
 			context.translate(0, width * offset);
-			context.setFill(lowColor.interpolate(highColor, value).deriveColor(0., 1., 1., 0.7));
+			context.setFill(lowColor.interpolate(highColor, value).deriveColor(0., 1., 1., 0.9));
 			context.fillRect(0, 0, getWidth() * value, width);
 			context.restore();
 		}

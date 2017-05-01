@@ -1,21 +1,16 @@
 package inf101.simulator.objects;
-import inf101.simulator.Direction;
-import inf101.simulator.GraphicsHelper;
-import inf101.simulator.Habitat;
-import inf101.simulator.MediaHelper;
-import inf101.simulator.Position;
-import inf101.simulator.SimMain;
-import inf101.simulator.objects.AbstractMovingObject;
-import inf101.simulator.objects.IEdibleObject;
-import inf101.simulator.objects.ISimObject;
-import inf101.simulator.objects.SimEvent;
+import inf101.simulator.*;
 import inf101.simulator.objects.examples.SimRepellant;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class SimAnimal extends AbstractMovingObject {
 	private static final double defaultSpeed = 1.0;
 	private Habitat habitat;
+	private double health = 1;
 
 	public SimAnimal(Position pos, Habitat hab) {
 		super(new Direction(0), pos, defaultSpeed);
@@ -25,14 +20,17 @@ public class SimAnimal extends AbstractMovingObject {
 	@Override
 	public void draw(GraphicsContext context) {
 		super.draw(context);
-		
-		//Flips the image to keep the 'graphic' upright when a certain angle is reached
+		// flips the image to keep the 'graphic' upright when a certain angle is reached
 		if (getDirection().toAngle() <= 90 && getDirection().toAngle() >= -90) {
 			context.translate(0, getHeight());
 			context.scale(1.0,-1.0);
 		}
-		
 		context.drawImage(MediaHelper.getImage("pipp.png"),0,0, getWidth(), getHeight());
+        // represents the field of view
+        context.setStroke(Color.CADETBLUE.deriveColor(0.0, 1.0, 1.0, 0.75));
+        GraphicsHelper.strokeArcAt(context, getWidth()/2, getHeight()/2, 30, 0, 180);
+		// represents the health
+		drawBar(context, getHealth(), -1, Color.RED, Color.GREEN);
 	}
 
 	public IEdibleObject getBestFood() {
@@ -44,7 +42,6 @@ public class SimAnimal extends AbstractMovingObject {
 			if(obj instanceof IEdibleObject)
 				return (IEdibleObject) obj;
 		}
-		
 		return null;
 	}
 
@@ -54,12 +51,35 @@ public class SimAnimal extends AbstractMovingObject {
      * @return the closest 'SimRepllant' in regards to a set radius
      */
 	public SimRepellant getClosestRepellant() {
-		for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+200)) {
+		for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+275)) {
 			if(obj instanceof SimRepellant)
 				return (SimRepellant) obj;
 		}
 		return null;
 	}
+
+    /**
+     * Finds the average angle from 'this' object to the dangers around it, 
+     * (limited by: distanceLimit-param in nearbyObjects-method)
+     * 
+     * @return The average angle, converted from radians to degrees
+     */
+	public double averageDangerAngle() {
+        ArrayList<ISimObject> dangers = new ArrayList<>();
+        double cosSum = 0, sinSum = 0;
+        for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+275)) {
+            if(obj instanceof SimRepellant)
+                dangers.add(obj);
+        }
+        for (ISimObject x : dangers) {
+            //System.out.println("DIRECTION: " + directionTo(x).toAngle());
+            double radian = directionTo(x).toRadians();
+            cosSum += Math.cos(radian);
+            sinSum += Math.sin(radian);
+        }
+        //System.out.println(Math.toDegrees(Math.atan2(sinSum, cosSum)));
+        return Math.toDegrees(Math.atan2(sinSum, cosSum));
+    }
 
 	@Override
 	public double getHeight() {
@@ -77,17 +97,30 @@ public class SimAnimal extends AbstractMovingObject {
 		ISimObject closestRepellant = getClosestRepellant();
 		
 		if (closestRepellant != null) {
-			dir = dir.turnTowards(-directionTo(closestRepellant).toAngle(),3);
+		    // turn away from danger hence '-' opposite direction
+            dir = dir.turnTowards(-averageDangerAngle(),2);
+			// accelerate when the the object has turned away from the danger
+			if (dir.angleDifference(new Direction(averageDangerAngle())) > 120) {
+                accelerateTo(defaultSpeed * 2 , 0.2);
+            }
 		}
 		
         // moves slightly towards center if there does not exist consumables
 		if (consumableFood != null && (dir.angleDifference(directionTo(consumableFood)) < 90 )){
+		    // turn towards the food if it is inside the 'field of view'
 			dir = dir.turnTowards(directionTo(consumableFood), 2);
-			accelerateTo(defaultSpeed * 2, 0.3);
+			accelerateTo(defaultSpeed * 1.5, 0.2);
+			
+			// eat the consumable on touch
 			if (distanceToTouch(consumableFood) <= 0) {
 				consumableFood.eat(1);
-			}
+				if (getHealth() < 1.5) {
+				    increaseHealth();
+				    say("yum");
+                }
+            }
 		} else {
+		    Random x = new Random();
 			dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.5);
 		}
 		
@@ -99,8 +132,31 @@ public class SimAnimal extends AbstractMovingObject {
 				accelerateTo(5 * defaultSpeed, 0.3);
 			}
 		}
-        
+		
+		// kills animal if health reaches zero
+		if (health <= 0) {
+		    destroy();
+        }
+        // health decreases as time passes
+		decreaseHealth();
+		
 		accelerateTo(defaultSpeed, 0.1);
-		super.step();
+        super.step();
 	}
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
+    }
+    
+    public void increaseHealth() {
+	    health = health + 0.015;
+    }
+    
+    public void decreaseHealth() {
+	    health = health - 0.0005;
+    }
 }

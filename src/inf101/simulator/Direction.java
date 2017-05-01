@@ -123,6 +123,13 @@ public class Direction {
 		return angleDeg;
 	}
 
+    /**
+     * Translate to radians
+     * 
+     * @return Angle in radians
+     */
+	public double toRadians() { return angleRad; }
+
 	/**
 	 * @param xDir
 	 * @param yDir
@@ -251,8 +258,8 @@ public class Direction {
                 clockwiseResult = (a - b + 360) % 360,
                 counterClockwiseResult = (b - a + 360) % 360;
         //TODO: REMOVE PRINTS LATER (ONLY FOR TESTING)
-        /*System.out.println("-->" + clockwiseResult);
-        System.out.println("<--" + counterClockwiseResult);*/
+        //System.out.println("-->" + clockwiseResult);
+        //System.out.println("<--" + counterClockwiseResult);
         return Math.min(clockwiseResult, counterClockwiseResult);
 	}
 }
