@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
-
 import inf101.simulator.objects.ISimObjectFactory;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;

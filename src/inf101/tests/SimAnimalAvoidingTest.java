@@ -21,7 +21,9 @@ public class SimAnimalAvoidingTest {
 	public void avoidDangerTest1() {
 		Habitat hab = new Habitat(main, 2000, 500);
 		SimAnimal sim1 = new SimAnimal(new Position(250, 250), hab);
-		SimRepellant rep1 = new SimRepellant(new Position(550, 250));
+		SimRepellant rep1 = new SimRepellant(new Position(350, 250));
+		double distanceBefore = sim1.getPosition().distanceTo(rep1.getPosition());
+		
 		hab.addObject(sim1);
 		hab.addObject(rep1);
 
@@ -31,8 +33,9 @@ public class SimAnimalAvoidingTest {
 //			System.out.println(sim1.getDirection());
 			hab.step();
 		}
-		// we're currently facing away from the repellant
-		assertTrue(Math.abs(sim1.getPosition().directionTo(rep1.getPosition()).toAngle() - sim1.getDirection().toAngle()) > 90);
+		// we're currently further away from the repellant
+		assertTrue(distanceBefore < sim1.getPosition().distanceTo(rep1.getPosition()));
+		// old test: assertTrue(Math.abs(sim1.getPosition().directionTo(rep1.getPosition()).toAngle() - sim1.getDirection().toAngle()) > 90);
 		for (int i = 0; i < 1000; i++) {
 			hab.step();
 		}

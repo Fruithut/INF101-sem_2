@@ -1,18 +1,16 @@
 # Oversikt
-
 Student: Olav Gjerde
 Brukernavn: ogj005
 E-mail: fruithut@gmail.com
 
 ## Generelle endringer angående orginal struktur og kode
     - SimAnimal flyttet fra examples til objects mappen i hierarkiet
-    - SimAnimal sin grafikk vil rotere når en viss vinkel er nådd
-    - Direction har motatt en 'angleDifference'-funksjon
-    - SimAnimal har motatt en funksjon for å finne nærmeste 'SimRepellant'
-    
+    - SimAnimal sin grafikk vil rotere når en viss vinkel er nådd og grafikk for å vise "liv".
+    - Direction har nye funksjoner som: 'angleDifference', 'toRadians',..
+    - SimAnimal har nye funksjoner som: 'getClosestRepellant', 'averageDangerAngle', 'getHealth', 
+    'setHealth', 'increaseHealth', 'decreaseHealth',..
 
 ## Om funksjonaliteten
-
     //TODO
     beskrivelse av system
     implementasjonsvalg begrunnes
