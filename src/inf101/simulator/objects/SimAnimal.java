@@ -1,9 +1,9 @@
 package inf101.simulator.objects;
+
 import inf101.simulator.*;
 import inf101.simulator.objects.examples.SimRepellant;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,7 +45,10 @@ public class SimAnimal extends AbstractMovingObject {
 	}
 
 	/**
-	 * //TODO COMMENT
+	 * Uses the foodSorter class which implements the Comparator interface to sort
+	 * the IEdibleObjects from lowest to highest in regards to the nutritional value
+	 * of the objects.
+	 * 
 	 * @return The IEdibleObject with the highest nutritional value
 	 */
 	public IEdibleObject getBestFood() {
@@ -127,7 +130,7 @@ public class SimAnimal extends AbstractMovingObject {
 	 * it will try to find food, else it moves towards the center of the habitat.
 	 * 
 	 * Consuming food will increase health -> health decreases slowly without consumption
-	 * A health-value of zero will kill the object
+	 * A health-value of zero will "destroy" the object
 	 */
 	@Override
 	public void step() {
@@ -146,7 +149,6 @@ public class SimAnimal extends AbstractMovingObject {
 			dir = dir.turnTowards(directionTo(getBestFood()), 2);
 			accelerateTo(defaultSpeed * 1.5, 0.3);
 		} else {
-			// moves slightly towards center if there does not exist consumables or dangers
 			dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.5);
 		}
 		

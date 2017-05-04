@@ -184,6 +184,7 @@ public class SimMain extends Application {
 	}
 
 	private void drawBackground(GraphicsContext context) {
+		//context.drawImage(MediaHelper.getImage("bakgrunn.png"),0,0, habitat.getWidth(), habitat.getHeight());
 		context.setFill(Color.BLACK);
 		// context.fillRect(0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
 		context.fillRect(0, 0, habitat.getWidth(), habitat.getHeight());

@@ -31,11 +31,6 @@ public class SimFeed extends AbstractSimObject implements IEdibleObject {
 	@Override
 	public void draw(GraphicsContext context) {
 		super.draw(context);
-		
-		//TODO
-		//Placeholder for other graphics later
-		//context.drawImage(MediaHelper.getImage("apple-256.png"),0,0,getWidth(),getHeight());
-		
 		context.setFill(Color.CHOCOLATE);
 		context.fillOval(0, 0, getWidth(), getHeight());
 	}

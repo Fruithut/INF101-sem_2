@@ -1,6 +1,5 @@
 package inf101.simulator;
 
-import inf101.simulator.objects.ISimObjectFactory;
 import inf101.simulator.objects.examples.Blob;
 import inf101.simulator.objects.SimAnimal;
 import inf101.simulator.objects.examples.SimFeed;
@@ -21,9 +20,6 @@ public class Setup {
 		habitat.addObject(new SimAnimal(new Position(400, 400), habitat));
 		habitat.addObject(new Blob(new Direction(0), new Position(400, 400), 1));
 		
-		// lambda alternative to constructing a factory-class for each object 
-		ISimObjectFactory simAnimalFactory = (Position pos, Habitat hab) -> new SimAnimal(pos,hab);
-
 		for (int i = 0; i < 3; i++)
 			habitat.addObject(new SimRepellant(main.randomPos()));
 
@@ -31,7 +27,8 @@ public class Setup {
                 main.getRandom().nextDouble()*2+0.5), "SimFeed™", SimFeed.PAINTER);
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimRepellant(pos),
                 "SimRepellant™", SimRepellant.PAINTER);
-		SimMain.registerSimObjectFactory(simAnimalFactory, "SimAnimal", "pipp.png");
+		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimAnimal(pos,hab), 
+				"SimAnimal", "pipp.png");
 	}
 
 	/**
