@@ -1,11 +1,5 @@
 package inf101.simulator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import inf101.simulator.objects.ISimListener;
 import inf101.simulator.objects.ISimObject;
 import inf101.simulator.objects.SimEvent;
@@ -13,6 +7,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Habitat {
 	static class Pair<T, U> {
@@ -357,7 +356,20 @@ public class Habitat {
 		// ducks.get(i).step();
 
 		hoveredObject = null;
-		for (ISimObject obj : objects) {
+		
+		//Used a regular for-loop to avoid the "concurrent modification exception" when one object initialises another
+		for (int i = 0; i < objects.size(); i++) {
+			if (objects.get(i).exists()) {
+				objects.get(i).step();
+			}
+
+			if (mousePos != null && objects.get(i).exists() && objects.get(i).contains(mousePos)) {
+				hoveredObject = objects.get(i);
+			}
+		}
+		
+		//Old code:
+		/*for (ISimObject obj : objects) {
 			if (obj.exists()) {
 				obj.step();
 			}
@@ -365,7 +377,7 @@ public class Habitat {
 			if (mousePos != null && obj.exists() && obj.contains(mousePos)) {
 				hoveredObject = obj;
 			}
-		}
+		}*/
 
 		// if(mousePos != null)
 		// ((Blob)objects.get(3)).pos = mousePos;

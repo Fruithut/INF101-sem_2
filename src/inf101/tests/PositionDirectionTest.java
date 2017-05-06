@@ -1,9 +1,5 @@
 package inf101.tests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import inf101.simulator.Direction;
 import inf101.simulator.Position;
 import inf101.tests.properties.StandardProperties;
@@ -11,6 +7,10 @@ import inf101.util.IGenerator;
 import inf101.util.generators.DirectionGenerator;
 import inf101.util.generators.DoubleGenerator;
 import inf101.util.generators.PositionGenerator;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PositionDirectionTest {
 

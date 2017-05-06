@@ -1,9 +1,5 @@
 package inf101.simulator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.function.Consumer;
 import inf101.simulator.objects.ISimObjectFactory;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -21,17 +17,15 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * @author anya
@@ -185,8 +179,7 @@ public class SimMain extends Application {
 
 	private void drawBackground(GraphicsContext context) {
 		//context.drawImage(MediaHelper.getImage("bakgrunn.png"),0,0, habitat.getWidth(), habitat.getHeight());
-		context.setFill(Color.BLACK);
-		// context.fillRect(0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
+		context.setFill(Color.BLANCHEDALMOND.darker());
 		context.fillRect(0, 0, habitat.getWidth(), habitat.getHeight());
 	}
 

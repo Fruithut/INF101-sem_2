@@ -1,15 +1,12 @@
 package inf101.simulator.objects.examples;
 
-import java.util.function.Consumer;
-
 import inf101.simulator.Direction;
-import inf101.simulator.GraphicsHelper;
-import inf101.simulator.MediaHelper;
 import inf101.simulator.Position;
 import inf101.simulator.objects.AbstractSimObject;
 import inf101.simulator.objects.IEdibleObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import java.util.function.Consumer;
 
 public class SimFeed extends AbstractSimObject implements IEdibleObject {
 	private static final double NUTRITION_FACTOR = 10;

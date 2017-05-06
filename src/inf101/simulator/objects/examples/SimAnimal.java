@@ -1,7 +1,7 @@
-package inf101.simulator.objects;
+package inf101.simulator.objects.examples;
 
 import inf101.simulator.*;
-import inf101.simulator.objects.examples.SimRepellant;
+import inf101.simulator.objects.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
@@ -124,6 +124,18 @@ public class SimAnimal extends AbstractMovingObject {
 		return 50;
 	}
 
+	public double getHealth() {
+		return health;
+	}
+
+	public void increaseHealth() {
+		health = health + 0.015;
+	}
+
+	public void decreaseHealth() {
+		health = health - 0.0005;
+	}
+
 	/**
 	 * One step of the behaviour that defines the SimAnimal
 	 * Will try to evade dangers first, if no dangers are "found"
@@ -177,16 +189,4 @@ public class SimAnimal extends AbstractMovingObject {
 		accelerateTo(defaultSpeed, 0.1);
         super.step();
 	}
-
-    public double getHealth() {
-        return health;
-    }
-    
-    public void increaseHealth() {
-	    health = health + 0.015;
-    }
-    
-    public void decreaseHealth() {
-	    health = health - 0.0005;
-    }
 }

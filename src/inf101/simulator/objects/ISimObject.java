@@ -46,6 +46,14 @@ public interface ISimObject {
 	boolean exists();
 
 	/**
+	 * Object that can be shot are marked with true, if this is not the
+	 * case then false. (Default -> false)
+	 * 
+	 * @return True if the object can be shot
+	 */
+	boolean shootable();
+
+	/**
 	 * @return The direction the object is facing
 	 */
 	Direction getDirection();

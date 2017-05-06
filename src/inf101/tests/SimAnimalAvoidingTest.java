@@ -1,15 +1,14 @@
 package inf101.tests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.SimMain;
-import inf101.simulator.objects.SimAnimal;
+import inf101.simulator.objects.examples.SimAnimal;
 import inf101.simulator.objects.examples.SimRepellant;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class SimAnimalAvoidingTest {
 	private SimMain main;
@@ -35,7 +34,7 @@ public class SimAnimalAvoidingTest {
 		}
 		// we're currently further away from the repellant
 		assertTrue(distanceBefore < sim1.getPosition().distanceTo(rep1.getPosition()));
-		// old test: assertTrue(Math.abs(sim1.getPosition().directionTo(rep1.getPosition()).toAngle() - sim1.getDirection().toAngle()) > 90);
+		assertTrue(Math.abs(sim1.getPosition().directionTo(rep1.getPosition()).toAngle() - sim1.getDirection().toAngle()) > 90);
 		for (int i = 0; i < 1000; i++) {
 			hab.step();
 		}

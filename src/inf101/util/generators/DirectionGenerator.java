@@ -1,9 +1,9 @@
 package inf101.util.generators;
 
-import java.util.Random;
-
 import inf101.simulator.Direction;
 import inf101.util.IGenerator;
+
+import java.util.Random;
 
 public class DirectionGenerator extends AbstractGenerator<Direction> {
 	private final IGenerator<Double> gen;

@@ -224,4 +224,9 @@ public abstract class AbstractSimObject implements ISimObject {
 		builder.append(getClass().getTypeName()).append(" [pos=").append(pos).append("]");
 		return builder.toString();
 	}
+	
+	@Override
+	public boolean shootable() {
+		return false;
+	}
 }

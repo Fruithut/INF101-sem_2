@@ -1,11 +1,10 @@
 package inf101.simulator.objects.examples;
 
-import java.util.Random;
-
 import inf101.simulator.Direction;
 import inf101.simulator.Position;
 import inf101.simulator.objects.AbstractMovingObject;
 import javafx.scene.canvas.GraphicsContext;
+import java.util.Random;
 
 public class Blob extends AbstractMovingObject {
 	private Random r = new Random();
