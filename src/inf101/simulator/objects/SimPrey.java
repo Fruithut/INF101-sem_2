@@ -3,7 +3,6 @@ package inf101.simulator.objects;
 import inf101.simulator.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import java.util.Random;
 
 /**
  * An implementation of a spaceship that hunts mainly after SimMeteor-objects
@@ -11,15 +10,9 @@ import java.util.Random;
  */
 public class SimPrey extends AbstractMovingObject {
     private static final double defaultSpeed = 1.5;
-    private Habitat habitat;
-    private int stepCount = 0;
-    private Random randomGen = new Random();
-    private Direction randomPath;
     
     public SimPrey(Position pos, Habitat hab) {
-        super(new Direction(0), pos, defaultSpeed);
-        this.habitat = hab;
-        this.randomPath = new Direction(randomGen.nextInt(360));
+        super(new Direction(0), pos, defaultSpeed, hab);
     }
     
     @Override
@@ -43,28 +36,6 @@ public class SimPrey extends AbstractMovingObject {
         return 60;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        SimPrey simPrey = (SimPrey) o;
-
-        if (stepCount != simPrey.stepCount) return false;
-        if (!habitat.equals(simPrey.habitat)) return false;
-        return randomPath.equals(simPrey.randomPath);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + habitat.hashCode();
-        result = 31 * result + stepCount;
-        result = 31 * result + randomPath.hashCode();
-        return result;
-    }
-
     /**
      * The step method runs one iteration of the SimPrey's behaviour.
      * Will first move towards meteors (in range) and try to shoot them, if it gets too close it will try to avoid
@@ -78,28 +49,25 @@ public class SimPrey extends AbstractMovingObject {
      */
     @Override
     public void step() {
-        IEdibleObject consumableObject = SimObjectHelper.getClosestSilverPickup(this, habitat, 275);
-        SimMeteor closestMeteor = SimObjectHelper.getClosestMeteor(this, habitat, 400);
-        SimHunter closestHunter = SimObjectHelper.getClosestHunter(this, habitat, 275);
-        
-        if (stepCount % 200 == 0) {
-            randomPath = new Direction(randomGen.nextInt(360));
-        }
+        IEdibleObject consumableObject = SimObjectHelper.getClosestSilverPickup(this, habitat, 325);
+        SimMeteor closestMeteor = SimObjectHelper.getClosestMeteor(this, habitat, 325);
+        SimHunter closestHunter = SimObjectHelper.getClosestHunter(this, habitat, 325);
 
         if (closestMeteor != null && ((dir.angleDifference(directionTo(closestMeteor)) < 90) && distanceToTouch(closestMeteor) > 100)) {
             dir = dir.turnTowards(directionTo(closestMeteor), 2);
-            if (randomGen.nextInt(70) == 5) {
-                habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 200, 1));
+            if (randomGen.nextInt(70) == 0) {
+                habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 300, 1));
             }
         } else if (closestMeteor != null && distanceToTouch(closestMeteor) <= 100) {
-            dir = dir.turnTowards(SimObjectHelper.getAverageMeteorAngle(this, habitat, 175) + 180, 3);
+            dir = dir.turnTowards(SimObjectHelper.getAverageMeteorAngle(this, habitat, 325) + 180, 3);
             accelerateTo(defaultSpeed * 1.25, 0.8);
         } else if (consumableObject != null && (dir.angleDifference(directionTo(consumableObject)) < 90)) {
-            dir = dir.turnTowards(directionTo(SimObjectHelper.getBestSilverPickup(this, habitat, 275)), 3);
+            dir = dir.turnTowards(directionTo(SimObjectHelper.getBestSilverPickup(this, habitat, 325)), 3);
             accelerateTo(defaultSpeed * 1.5, 0.8);
         } else if (closestHunter != null) {
-            dir = dir.turnTowards(SimObjectHelper.getAverageHunterAngle(this, habitat, 275) + 180, 3);
-        } else if (getPosition().distanceTo(habitat.getCenter()) < 400) {
+            dir = dir.turnTowards(SimObjectHelper.getAverageHunterAngle(this, habitat, 325) + 180, 3);
+            accelerateTo(defaultSpeed * 1.5, 0.8);
+        } else if (getPosition().distanceTo(habitat.getCenter()) < 900) {
             dir = dir.turnTowards(randomPath, 0.5);
         } else {
             dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.5);
@@ -124,7 +92,6 @@ public class SimPrey extends AbstractMovingObject {
             destroy();
         }
         
-        stepCount++;
         accelerateTo(defaultSpeed, 0.1);
         super.step();
     }

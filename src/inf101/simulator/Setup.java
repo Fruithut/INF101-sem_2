@@ -21,7 +21,7 @@ public class Setup {
 		
 		// Code for part 1 commented out
 		/*habitat.addObject(new SimAnimal(new Position(400, 400), habitat));
-		habitat.addObject(new Blob(new Direction(0), new Position(400, 400), 1));
+		habitat.addObject(new Blob(new Direction(0), new Position(400, 400), 1, habitat));
 		
 		for (int i = 0; i < 3; i++)
 			habitat.addObject(new SimRepellant(main.randomPos()));
@@ -50,7 +50,7 @@ public class Setup {
 	 * random intervals
 	 */
 	public static void step(SimMain main, Habitat habitat) {
-		if (main.getRandom().nextInt(100) == 0) {
+		if (main.getRandom().nextInt(50) == 0) {
 			habitat.addObject(new SimMeteor(habitat));
 		}
 

@@ -85,9 +85,7 @@ public class SimGoldStar extends AbstractSimObject implements IEdibleObject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
         SimGoldStar that = (SimGoldStar) o;
-
         if (Double.compare(that.size, size) != 0) return false;
         if (counter != that.counter) return false;
         return expirationTimer == that.expirationTimer;

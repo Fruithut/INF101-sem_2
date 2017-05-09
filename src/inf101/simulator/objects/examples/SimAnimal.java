@@ -16,8 +16,7 @@ public class SimAnimal extends AbstractMovingObject {
 	private Habitat habitat;
     
 	public SimAnimal(Position pos, Habitat hab) {
-		super(new Direction(0), pos, defaultSpeed);
-		this.habitat = hab;
+		super(new Direction(0), pos, defaultSpeed, hab);
 		
 		// anonymous class for event-listener implementation
         class SimListener implements ISimListener {

@@ -8,14 +8,24 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
     ISimObject:
       *La til decreaseHealth(), decreaseHealth(double amount), increaseHealth(), double getHealth()
         -> AbstractSimObject implementerer disse med 'default' verdier. (det vil si at der er og en health-variabel)
+        
+    AbstractMovingObject:
+       *Utvidet klassen med nye feltvariabler (se: klassehierarkiet) siden det var felles for nye
+        klasser og ikke kom i konflikt med oppførsel og struktur fra del 1.
+       *Generer tilfeldig direction hver 200 steps -> for bruk i subklasser
 
     SimAnimal: 
       *Grafikk vil rotere når en viss vinkel er nådd og grafikk for å vise "liv".
       *Grafikk for "liv" og synsvinkel
       *Har nå funksjonalitet for å opprette lytter i konstruktør (legges til i habitat)
       *Konsum av IEdibleObject utløser en 'event' ("yum")
+      *Forandret konstruktør til å matche nye variabel i AbstractMovingObject
       *Nye metoder: 'getClosestRepellant', 'averageRepellantAngle', 
                     'increaseHealth', 'decreaseHealth', 'getBestFood' (fungerende).
+                    
+    Blob:
+      *Forandret konstruktør til å matche nye variabel i AbstractMovingObject
+      
     Direction:
       *Nye metoder: 'angleDifference', 'toRadians'.
         
@@ -28,11 +38,11 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
       
     SimMain:
       *Endret variabler anngående dimensjonene på habitatet (større + mindre side meny)
-      *Added a background in the drawBackground()-method
+      *La til en bakgrunn i drawBackground()-metoden
       
     SimAnimalAvoidingTest:
       *Ordnet på 'avoidDangerTest1' -> denne skjekker nå om avstanden fra 'faren'
-      til SimAnimal-objektet øker etter en gitt mengde steg.
+       til SimAnimal-objektet øker etter en gitt mengde steg. (tester begge)
         
 ## Om funksjonaliteten/prosjektet
 
@@ -45,38 +55,98 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         SimSilverStar
         SimObjectHelper
         
-        Beskrivelse av klassehierarkiet:
+        Beskrivelse av klassehierarkiet (alt som er nytt):
             AbstractSimObject
                 *SimGoldStar (IEdibleObject)
+                    Feltvariabler: double ENERGY_FACTOR, DIAMETER, size
+                                   int counter, expirationTimer
                 *SimSilverStar (IEdibleObject)
-                    AbstractMovingObject
-                        *SimHunter
-                        *SimPrey
-                        *SimMeteor
-                        *SimProjectile
+                    Feltvariabler: ^Samme som over
+                        AbstractMovingObject
+                            Feltvariabler: Random randomGen
+                                           Direction randomPath
+                                           int stepCount
+                                           Habitat habitat
+                                *SimHunter
+                                    Feltvariabler: double defaultSpeed (brukt i konstruktør)
+                                *SimPrey
+                                    Feltvariabler: double defaultSpeed
+                                *SimMeteor
+                                    Feltvariabler: double defaultSpeed, height, width
+                                                   int type
+                                *SimProjectile
+                                    Feltvariabler: double defaultSpeed
+                                                   int range, type
             Utenforstående
                 *SimObjectHelper
-            Tester (fyll inn)
-                -xxx
-                -xxx
+                    Feltvariabler: Ingen, kun statiske hjelpemetoder
+            Tester
+                *xxx
+                *xxx
+                
+        - De nye klassene bygger videre på funksjonaliteten som allerede er i AbstractSimObject og
+          i AbstractMovingObject. Det har blitt lagt til metoder i ISimObject som sier at der skal
+          være metoder som øker/minker 'health' o.l, en "default" implementasjon av dette har blitt laget
+          i AbstractSimObject. AbstractMovingObject har blitt utvidet med 4 nye variabler, en for Random,
+          Direction, (int) stepCount, og Habitat. 
+          Fra toppen har vi SimGoldStar og SimSilverStar som utvider AbstractSimObject dette er IEdibleObjects
+          som har en fast posisjon og som vil forsvinne etter et gitt antall steps. Næringsinnholdet er som med
+          SimFeed i del 1 bestemt etter størrelsen på objektene -> og minker ved konsumering. Lavere i hierarkiet
+          har vi SimHunter, SimPrey, SimMeteor og SimProjectile. Merk derimot at SimProjectile kun blir nyttet
+          gjennom SimHunter og SimPrey, og eventuelt 'direkte' under testing. Utenom dette er der en hjelpeklasse
+          SimObjectHelper som kun har statiske hjelpemetoder til bruk sammen med de nye klassene.
     
     Feil/mangler
-        -
+        - "Ingen kritiske forhåpentligvis" - Olav :)
     
     Oppførsel/"Spilleregler"
         - SimHunter
-        
+            Mål: Unngå meteorer, konsumere SimGoldStars, og jakter på SimPrey til slutt.
+            Fart: min 1 - maks 2 (unntak ved å komme seg inn til habitat igjen)
+            Liv: 1 -> maks 1.5
+            Prosjektil: 1/50 sjangs for å skyte når SimPrey er innen rekkevidde
+                        og er i synsfeltet (180grader). Skyter type 0.
+            Vanlig retning: Går mot midten så lenge avstanden til midten er større enn 900,
+                            vil ta en tilfeldig retning om den er innenfor. 
+            Siktavstand: 375
+            
         - SimPrey
+            Mål: Jakter på meteorer og øker livet sitt ved å konsumere SimSilverStars.
+                 Prøver å unngå SimHunter som "siste" prioritet.
+            Fart: min 1.5 - maks 2.25 (unntak ved å komme seg inn til habitat igjen)
+            Liv: 1 - maks 2.0
+            Prosjektil: 1/70 sjangs for å skyte når SimMeteor er innen rekkevidde
+                        og er i synsfeltet (180grader). Skyter type 1.
+            Vanlig retning: Går mot midten så lenge avstanden til midten er større enn 900,
+                            vil ta en tilfeldig retning om den er innenfor.
+            Siktavstand: 325
         
         - SimMeteor
-        
+            Mål: Blir "spawnet" utenfor habitat og kommer seilende inn. Utgjør en farefaktor.
+            Fart: 1.5
+            Liv: 1.0
+            Retning: Får tilskrevet en tilfeldig retning under initialisering, forandrer bane ved
+                     kollisjon med andre SimMeteors, SimPreys eller SimHunters.
+            Ved død: Om type 0 -> exploderer til 2 mindre SimMeteors(type 1)
+                     Om type 1 -> lager et SimSilverStar-object på sin posisjon
+            
         - SimProjectile
+            Mål: Skade objekter i sin egen bane alt etter type prosjektil.
+                 Type 0 -> Skader SimPrey og eventuelt SimMeteor
+                 Type 1 -> Skader SimMeteor og eventuelt SimHunter
+            Fart: 3
+            Retning: Som den er brukt i SimHunter og SimPrey tar den retningen som "de" var i
+                     under initialisering.
         
         - SimGoldStar/SimSilverStar
+            Mål: Fungere som liv til SimHunter/SimPrey
+            Fart: 0 -> står stille
+            Ekstra: Har en viss holdbarhet og vil begynne å blinke
+                    når denne grensen nærmer seg.
     
     System
         Design
-            - "Design av nye klasser og funksjoner her"
+            - Planen er å lage noe som kan ligne på de gamle "space-shooters" fra Atari-tiden. 
         
         Implementasjonsvalg
             -
@@ -163,6 +233,8 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             hvert enkelt objekt i forskjellige situasjoner, noe som hadde blitt til veldig mye kode.
 
 ## Kilder til media
-
+    
+    //TODO CREDITS FOR GRAFIKK
+    
     * Rammeverkkode: © Anya Helene Bagge (basert på tidligere utgaver, laget av Anya Helene Bagge, Anneli Weiss og andre).
     * pipp.png, bakgrunn.png © Anya Helene Bagge, This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License

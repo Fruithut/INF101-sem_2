@@ -8,10 +8,9 @@ import javafx.scene.canvas.GraphicsContext;
  * Another one to place a "default" meteor on a specific point. And for "internal" use with a exploding effect.
  */
 public class SimMeteor extends AbstractMovingObject {
-    private static final double defaultSpeed = 2;
+    private static final double defaultSpeed = 1.5;
     private double height, width;
     private int type = 0;
-    private Habitat habitat;
 
     /**
      * This constructor places the object outside of the viewers sight such that it creates a feeling of appearing form
@@ -22,12 +21,11 @@ public class SimMeteor extends AbstractMovingObject {
      * @param hab Habitat to be placed in
      */
     public SimMeteor(Habitat hab) {
-        super(new Direction(90), new Position(SimMain.getInstance().getRandom().nextInt((int) (hab.getWidth()*1.5)), -100), defaultSpeed);
-        this.habitat = hab;
+        super(new Direction(90), new Position(SimMain.getInstance().getRandom().nextInt((int) (hab.getWidth()*1.1)), -100), defaultSpeed, hab);
         this.height = 120;
         this.width = 120;
-        dir = dir.turnTowards(directionTo(new Position((double) SimMain.getInstance().getRandom().nextInt((int) hab.getWidth()),
-                            (double) SimMain.getInstance().getRandom().nextInt((int) hab.getWidth()/2) + 100)), 180);
+        dir = dir.turnTowards(directionTo(new Position((double) randomGen.nextInt((int) hab.getWidth()),
+                          (double) randomGen.nextInt((int) hab.getWidth()/2) + 200)), 180);
     }
 
     /**
@@ -37,8 +35,7 @@ public class SimMeteor extends AbstractMovingObject {
      * @param hab the habitat the the object belongs to
      */
     public SimMeteor(Direction dir, Position pos, Habitat hab) {
-        super(dir, pos, defaultSpeed);
-        this.habitat = hab;
+        super(dir, pos, defaultSpeed, hab);
         this.height = 120;
         this.width = 120;
     }
@@ -53,8 +50,7 @@ public class SimMeteor extends AbstractMovingObject {
      * @param height of the object
      */
     private SimMeteor(Direction dir, Position pos, Habitat hab, double width, double height) {
-        super(dir, pos, defaultSpeed);
-        this.habitat = hab;
+        super(dir, pos, defaultSpeed, hab);
         this.height = height;
         this.width = width;
         this.type = 1;
@@ -91,13 +87,10 @@ public class SimMeteor extends AbstractMovingObject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
         SimMeteor simMeteor = (SimMeteor) o;
-
         if (Double.compare(simMeteor.height, height) != 0) return false;
         if (Double.compare(simMeteor.width, width) != 0) return false;
-        if (type != simMeteor.type) return false;
-        return habitat.equals(simMeteor.habitat);
+        return type == simMeteor.type;
     }
 
     @Override
@@ -109,7 +102,6 @@ public class SimMeteor extends AbstractMovingObject {
         temp = Double.doubleToLongBits(width);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + type;
-        result = 31 * result + habitat.hashCode();
         return result;
     }
 
@@ -136,6 +128,14 @@ public class SimMeteor extends AbstractMovingObject {
     }
 
     /**
+     * Spawns a SimSilverStar and destroys 'this' object
+     */
+    private void spawnSimSilverStar() {
+        habitat.addObject(new SimSilverStar(getPosition(), SimMain.getInstance().getRandom().nextDouble()*2+0.5, 1200));
+        destroy();
+    }
+
+    /**
      * The step method runs one iteration of the SimMeteor's behaviour.
      * If the object reaches a health level of zero and is of type 0 it will explode generating
      * two new objects using meteorExplode() and then destroy itself. If health hits zero and the meteor
@@ -147,8 +147,7 @@ public class SimMeteor extends AbstractMovingObject {
         if (getHealth() <= 0 && type == 0) {
             meteorExplode();
         } else if (getHealth() <= 0 && type == 1) {
-           habitat.addObject(new SimSilverStar(getPosition(), SimMain.getInstance().getRandom().nextDouble()*2+0.5, 1200));
-           destroy();
+           spawnSimSilverStar();
         } else {
             ISimObject closestShip = SimObjectHelper.getClosestShip(this, habitat, 100);
             SimMeteor closestMeteor = SimObjectHelper.getClosestMeteor(this, habitat, 175);
@@ -158,18 +157,20 @@ public class SimMeteor extends AbstractMovingObject {
                 closestShip.decreaseHealth(0.4);
             }
             
-            // collision detection for meteor impact (changes direction, may spin of each other
-            // if they manage to get layered on top of each other
+            // collision detection for meteor impact (changes direction) 
+            // may explode (type 0) or spawn IEdibleSim (type 1) if impact is too great
             if (closestMeteor != null && distanceToTouch(closestMeteor) <= 0.5) {
+                if (distanceTo(closestMeteor) < getRadius()*2 - 5 && type == 0 && closestMeteor.getType() == 0) meteorExplode();
+                if (distanceTo(closestMeteor) < getRadius()*2 - 5 && type == 1 && closestMeteor.getType() == 1) spawnSimSilverStar();
+                if (distanceTo(closestMeteor) < getRadius() + closestMeteor.getRadius() - 5 && type == 0 && closestMeteor.getType() == 1) meteorExplode();
+                if (distanceTo(closestMeteor) < getRadius() + closestMeteor.getRadius() - 5 && type == 1 && closestMeteor.getType() == 0) spawnSimSilverStar();
                 dir = new Direction((getDirection().toAngle() + 180) + (SimMain.getInstance().getRandom().nextInt(120) - 60));
             }
             
             // destroy outside "spawn-range"
-            if (!habitat.contains(getPosition(), -950)) {
-                System.out.println("HIT");
+            if (!habitat.contains(getPosition(), -150-getRadius())) {
                 destroy();
             }
-            
             super.step();
         }
     }

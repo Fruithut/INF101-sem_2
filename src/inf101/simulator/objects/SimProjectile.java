@@ -12,8 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class SimProjectile extends AbstractMovingObject {
     private static final double defaultSpeed = 3;
-    private Habitat habitat;
-    private int counter = 0, range, type;
+    private int range, type;
 
     /**
      * Constructs a SimProjectile
@@ -24,7 +23,7 @@ public class SimProjectile extends AbstractMovingObject {
      * @param type of projectile, either 0 or 1
      */
     public SimProjectile(Direction targetDirection, Position startPos, Habitat hab, int range, int type) {
-        super(targetDirection, startPos, defaultSpeed);
+        super(targetDirection, startPos, defaultSpeed, hab);
         this.habitat = hab;
         this.range = range;
         this.type = type;
@@ -72,20 +71,14 @@ public class SimProjectile extends AbstractMovingObject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
         SimProjectile that = (SimProjectile) o;
-
-        if (counter != that.counter) return false;
         if (range != that.range) return false;
-        if (type != that.type) return false;
-        return habitat.equals(that.habitat);
+        return type == that.type;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + habitat.hashCode();
-        result = 31 * result + counter;
         result = 31 * result + range;
         result = 31 * result + type;
         return result;
@@ -124,12 +117,11 @@ public class SimProjectile extends AbstractMovingObject {
         }
         
         // destroy outside of habitat
-        if (!habitat.contains(getPosition(), getRadius())) {
+        if (!habitat.contains(getPosition(), -getRadius()*4)) {
             destroy();
         }
         
-        if (counter < range) {
-            counter++;
+        if (stepCount < range) {
             super.step();
         } else {
             destroy();
