@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * An implementation of an animal
+ */
 public class SimAnimal extends AbstractMovingObject {
 	private static final double defaultSpeed = 1.0;
 	private Habitat habitat;
-	private double health = 1;
     
 	public SimAnimal(Position pos, Habitat hab) {
 		super(new Direction(0), pos, defaultSpeed);
@@ -72,6 +74,9 @@ public class SimAnimal extends AbstractMovingObject {
         return foodList.get(foodList.size()-1);
     }
 
+    /**
+     * Find the closest IEdibleObject
+     */
 	public IEdibleObject getClosestFood() {
 		for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+275)) {
 			if(obj instanceof IEdibleObject)
@@ -86,7 +91,7 @@ public class SimAnimal extends AbstractMovingObject {
      * 
      * @return The average angle, converted from radians to degrees
      */
-	public double averageDangerAngle() {
+	public double averageRepellantAngle() {
         ArrayList<ISimObject> dangers = new ArrayList<>();
         double cosSum = 0, sinSum = 0;
         for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+175)) {
@@ -123,15 +128,13 @@ public class SimAnimal extends AbstractMovingObject {
 	public double getWidth() {
 		return 50;
 	}
-
-	public double getHealth() {
-		return health;
-	}
-
+	
+	@Override
 	public void increaseHealth() {
 		health = health + 0.015;
 	}
-
+	
+	@Override
 	public void decreaseHealth() {
 		health = health - 0.0005;
 	}
@@ -151,9 +154,9 @@ public class SimAnimal extends AbstractMovingObject {
 		
 		if (closestRepellant != null) {
 			// turn away from danger hence '+180' opposite direction
-            dir = dir.turnTowards(averageDangerAngle() + 180,2);
+            dir = dir.turnTowards(averageRepellantAngle() + 180,2);
 			// accelerate when the the object has turned away from the danger
-			if (dir.angleDifference(new Direction(averageDangerAngle())) > 120) {
+			if (dir.angleDifference(new Direction(averageRepellantAngle())) > 120) {
                 accelerateTo(defaultSpeed * 2.0 , 0.4);
             }
 		} else if (consumableFood != null && (dir.angleDifference(directionTo(consumableFood)) < 90 )) {

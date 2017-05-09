@@ -32,9 +32,9 @@ import java.util.function.Consumer;
  *
  */
 public class SimMain extends Application {
-	public static final double NOMINAL_WIDTH = 1900;
-	private static final double MENU_WIDTH = 100.00;
-	private static final double BUTTON_WIDTH = 75.00;
+	public static final double NOMINAL_WIDTH = 1900*2;
+	private static final double MENU_WIDTH = 100.00/1.5;
+	private static final double BUTTON_WIDTH = 75.00/1.5;
 	private static SimMain instance;
 	private static Map<String, ISimObjectFactory> factoryMap = new HashMap<>();
 	public static SimMain getInstance() {
@@ -178,9 +178,7 @@ public class SimMain extends Application {
 	}
 
 	private void drawBackground(GraphicsContext context) {
-		//context.drawImage(MediaHelper.getImage("bakgrunn.png"),0,0, habitat.getWidth(), habitat.getHeight());
-		context.setFill(Color.BLANCHEDALMOND.darker());
-		context.fillRect(0, 0, habitat.getWidth(), habitat.getHeight());
+		context.drawImage(MediaHelper.getImage("darkPurple.png"),0,0, habitat.getWidth(), habitat.getHeight());
 	}
 
 	/**

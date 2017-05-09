@@ -1,41 +1,78 @@
 # Oversikt
 Student: Olav Gjerde
 Brukernavn: ogj005
-E-mail: fruithut@gmail.com
+E-mail: fruithut@gmail.com / ogj005@student.uib.no
 
 ## Generelle endringer angående orginal struktur og kode
+
+    ISimObject:
+      *La til decreaseHealth(), decreaseHealth(double amount), increaseHealth(), double getHealth()
+        -> AbstractSimObject implementerer disse med 'default' verdier. (det vil si at der er og en health-variabel)
 
     SimAnimal: 
       *Grafikk vil rotere når en viss vinkel er nådd og grafikk for å vise "liv".
       *Grafikk for "liv" og synsvinkel
       *Har nå funksjonalitet for å opprette lytter i konstruktør (legges til i habitat)
       *Konsum av IEdibleObject utløser en 'event' ("yum")
-      *Flyttet fra examples til objects mappen i hierarkiet
-      *Nye metoder: 'getClosestRepellant', 'averageDangerAngle', 'getHealth', 
+      *Nye metoder: 'getClosestRepellant', 'averageRepellantAngle', 
                     'increaseHealth', 'decreaseHealth', 'getBestFood' (fungerende).
     Direction:
       *Nye metoder: 'angleDifference', 'toRadians'.
         
     Setup:
-      *Registrerte en "factory" (lambda) for å opprette SimAnimal objekter
-    
+      *Registrerte en/flere "factory" (lambda) for å opprette nye Sim... - objekter
+      *Generer meteorer og romskip etter "random"-generering
+      
+    Habitat:
+      *Endret step() for å unngå "ConcurrentModificationError"
+      
+    SimMain:
+      *Endret variabler anngående dimensjonene på habitatet (større + mindre side meny)
+      *Added a background in the drawBackground()-method
+      
     SimAnimalAvoidingTest:
       *Ordnet på 'avoidDangerTest1' -> denne skjekker nå om avstanden fra 'faren'
       til SimAnimal-objektet øker etter en gitt mengde steg.
         
 ## Om funksjonaliteten/prosjektet
 
-    Klasseoversikt
-        - "Mine nye klasser her"
+    Klasseoversikt:
+        SimHunter
+        SimPrey
+        SimMeteor
+        SimProjectile
+        SimGoldStar
+        SimSilverStar
+        SimObjectHelper
         
-        Beskrivelse av klassehierarkiet
-            - "Fra øverst til nederst: Fyll inn"
+        Beskrivelse av klassehierarkiet:
+            AbstractSimObject
+                *SimGoldStar (IEdibleObject)
+                *SimSilverStar (IEdibleObject)
+                    AbstractMovingObject
+                        *SimHunter
+                        *SimPrey
+                        *SimMeteor
+                        *SimProjectile
+            Utenforstående
+                *SimObjectHelper
+            Tester (fyll inn)
+                -xxx
+                -xxx
     
     Feil/mangler
         -
     
     Oppførsel/"Spilleregler"
-        -
+        - SimHunter
+        
+        - SimPrey
+        
+        - SimMeteor
+        
+        - SimProjectile
+        
+        - SimGoldStar/SimSilverStar
     
     System
         Design

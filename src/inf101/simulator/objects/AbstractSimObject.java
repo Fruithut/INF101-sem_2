@@ -15,6 +15,7 @@ public abstract class AbstractSimObject implements ISimObject {
 	protected boolean hideAnnotations = false;
 	private String message = null;
 	private int messageTime = 0;
+	protected double health = 1;
 
 	public AbstractSimObject(Direction dir, Position pos) {
 		this.dir = dir;
@@ -176,6 +177,26 @@ public abstract class AbstractSimObject implements ISimObject {
 	}
 
 	@Override
+	public void decreaseHealth() {
+		health = health - 0.25;
+	}
+
+	@Override
+	public void decreaseHealth(double amount) {
+		health = health - amount;
+	}
+
+	@Override
+	public void increaseHealth() {
+		health = health + 0.015;
+	}
+
+	@Override
+	public double getHealth() {
+		return health;
+	}
+
+	@Override
 	public void onClicked(MouseButton button) {
 	}
 
@@ -223,10 +244,5 @@ public abstract class AbstractSimObject implements ISimObject {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getClass().getTypeName()).append(" [pos=").append(pos).append("]");
 		return builder.toString();
-	}
-	
-	@Override
-	public boolean shootable() {
-		return false;
 	}
 }

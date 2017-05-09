@@ -46,14 +46,6 @@ public interface ISimObject {
 	boolean exists();
 
 	/**
-	 * Object that can be shot are marked with true, if this is not the
-	 * case then false. (Default -> false)
-	 * 
-	 * @return True if the object can be shot
-	 */
-	boolean shootable();
-
-	/**
 	 * @return The direction the object is facing
 	 */
 	Direction getDirection();
@@ -77,6 +69,26 @@ public interface ISimObject {
 	 * @return Width of the object
 	 */
 	double getWidth();
+
+	/**
+	 * Decrease the objects health
+	 */
+	void decreaseHealth();
+
+	/**
+	 * Decrease the objects health with a given amount
+	 */
+	void decreaseHealth(double amount);
+
+	/**
+	 * Increase the objects health
+	 */
+	void increaseHealth();
+
+	/**
+	 * @return The current health
+	 */
+	double getHealth();
 	
 	/**
 	 * Same as getPosition().getY()

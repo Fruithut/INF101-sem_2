@@ -13,7 +13,6 @@ public abstract class AbstractMovingObject extends AbstractSimObject implements 
 
 	public AbstractMovingObject(Direction dir, Position pos, double speed) {
 		super(dir, pos);
-
 		this.speed = speed;
 	}
 

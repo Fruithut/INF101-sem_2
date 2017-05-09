@@ -357,19 +357,8 @@ public class Habitat {
 
 		hoveredObject = null;
 		
-		//Used a regular for-loop to avoid the "concurrent modification exception" when one object initialises another
-		for (int i = 0; i < objects.size(); i++) {
-			if (objects.get(i).exists()) {
-				objects.get(i).step();
-			}
-
-			if (mousePos != null && objects.get(i).exists() && objects.get(i).contains(mousePos)) {
-				hoveredObject = objects.get(i);
-			}
-		}
-		
-		//Old code:
-		/*for (ISimObject obj : objects) {
+		//Applied fix for "concurrentmodificationerror" - Olav
+		for (ISimObject obj : new ArrayList<>(objects)) {
 			if (obj.exists()) {
 				obj.step();
 			}
@@ -377,7 +366,7 @@ public class Habitat {
 			if (mousePos != null && obj.exists() && obj.contains(mousePos)) {
 				hoveredObject = obj;
 			}
-		}*/
+		}
 
 		// if(mousePos != null)
 		// ((Blob)objects.get(3)).pos = mousePos;
