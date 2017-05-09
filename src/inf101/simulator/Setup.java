@@ -50,7 +50,7 @@ public class Setup {
 	 * random intervals
 	 */
 	public static void step(SimMain main, Habitat habitat) {
-		/*if (main.getRandom().nextInt(100) == 0) {
+		if (main.getRandom().nextInt(100) == 0) {
 			habitat.addObject(new SimMeteor(habitat));
 		}
 
@@ -63,6 +63,6 @@ public class Setup {
 				habitat.addObject(new SimHunter(new Position(main.getRandom().nextInt(1900),
 						main.getRandom().nextInt(950)), habitat));
 			}
-		}*/
+		}
 	}
 }

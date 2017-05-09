@@ -71,6 +71,7 @@ public class SimProjectile extends AbstractMovingObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         SimProjectile that = (SimProjectile) o;
 
@@ -82,7 +83,8 @@ public class SimProjectile extends AbstractMovingObject {
 
     @Override
     public int hashCode() {
-        int result = habitat.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + habitat.hashCode();
         result = 31 * result + counter;
         result = 31 * result + range;
         result = 31 * result + type;

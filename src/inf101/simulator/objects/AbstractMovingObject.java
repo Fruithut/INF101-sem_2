@@ -53,7 +53,29 @@ public abstract class AbstractMovingObject extends AbstractSimObject implements 
 		}
 	}
 
-	@Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AbstractMovingObject that = (AbstractMovingObject) o;
+
+        if (Double.compare(that.speed, speed) != 0) return false;
+        return exists == that.exists;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        long temp;
+        temp = Double.doubleToLongBits(speed);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (exists ? 1 : 0);
+        return result;
+    }
+
+    @Override
 	public double getSpeed() {
 		return speed;
 	}

@@ -84,6 +84,7 @@ public class SimSilverStar extends AbstractSimObject implements IEdibleObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         SimSilverStar that = (SimSilverStar) o;
 
@@ -94,10 +95,10 @@ public class SimSilverStar extends AbstractSimObject implements IEdibleObject {
 
     @Override
     public int hashCode() {
-        int result;
+        int result = super.hashCode();
         long temp;
         temp = Double.doubleToLongBits(size);
-        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + counter;
         result = 31 * result + expirationTimer;
         return result;

@@ -47,6 +47,7 @@ public class SimHunter extends AbstractMovingObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         SimHunter simHunter = (SimHunter) o;
 
@@ -57,7 +58,8 @@ public class SimHunter extends AbstractMovingObject {
 
     @Override
     public int hashCode() {
-        int result = habitat.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + habitat.hashCode();
         result = 31 * result + stepCount;
         result = 31 * result + randomPath.hashCode();
         return result;

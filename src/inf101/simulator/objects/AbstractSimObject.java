@@ -240,6 +240,37 @@ public abstract class AbstractSimObject implements ISimObject {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		AbstractSimObject that = (AbstractSimObject) o;
+
+		if (exists != that.exists) return false;
+		if (hideAnnotations != that.hideAnnotations) return false;
+		if (messageTime != that.messageTime) return false;
+		if (Double.compare(that.health, health) != 0) return false;
+		if (!dir.equals(that.dir)) return false;
+		if (!pos.equals(that.pos)) return false;
+		return message != null ? message.equals(that.message) : that.message == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = dir.hashCode();
+		result = 31 * result + pos.hashCode();
+		result = 31 * result + (exists ? 1 : 0);
+		result = 31 * result + (hideAnnotations ? 1 : 0);
+		result = 31 * result + (message != null ? message.hashCode() : 0);
+		result = 31 * result + messageTime;
+		temp = Double.doubleToLongBits(health);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getClass().getTypeName()).append(" [pos=").append(pos).append("]");

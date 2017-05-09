@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
  * Another one to place a "default" meteor on a specific point. And for "internal" use with a exploding effect.
  */
 public class SimMeteor extends AbstractMovingObject {
-    private static final double defaultSpeed = 1;
+    private static final double defaultSpeed = 2;
     private double height, width;
     private int type = 0;
     private Habitat habitat;
@@ -27,7 +27,7 @@ public class SimMeteor extends AbstractMovingObject {
         this.height = 120;
         this.width = 120;
         dir = dir.turnTowards(directionTo(new Position((double) SimMain.getInstance().getRandom().nextInt((int) hab.getWidth()),
-                            (double) SimMain.getInstance().getRandom().nextInt((int) hab.getWidth()/2) + 300)), 180);
+                            (double) SimMain.getInstance().getRandom().nextInt((int) hab.getWidth()/2) + 100)), 180);
     }
 
     /**
@@ -85,25 +85,27 @@ public class SimMeteor extends AbstractMovingObject {
     public void decreaseHealth() {
         health = health - 0.5;
     }
-    
-    // Breaks behaviour -> will think it hits itself -> see collision detection in step()
-    /*@Override
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
         SimMeteor simMeteor = (SimMeteor) o;
+
         if (Double.compare(simMeteor.height, height) != 0) return false;
         if (Double.compare(simMeteor.width, width) != 0) return false;
         if (type != simMeteor.type) return false;
         return habitat.equals(simMeteor.habitat);
-    }*/
+    }
 
     @Override
     public int hashCode() {
-        int result;
+        int result = super.hashCode();
         long temp;
         temp = Double.doubleToLongBits(height);
-        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(width);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + type;
@@ -163,7 +165,8 @@ public class SimMeteor extends AbstractMovingObject {
             }
             
             // destroy outside "spawn-range"
-            if (!habitat.contains(getPosition(), -120)) {
+            if (!habitat.contains(getPosition(), -950)) {
+                System.out.println("HIT");
                 destroy();
             }
             
