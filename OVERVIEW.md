@@ -24,7 +24,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                     'increaseHealth', 'decreaseHealth', 'getBestFood' (fungerende).
                     
     Blob:
-      *Forandret konstruktør til å matche nye variabel i AbstractMovingObject
+      *Forandret konstruktør til å matche ny variabel i AbstractMovingObject
       
     Direction:
       *Nye metoder: 'angleDifference', 'toRadians'.
@@ -45,6 +45,56 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
        til SimAnimal-objektet øker etter en gitt mengde steg. (tester begge)
         
 ## Om funksjonaliteten/prosjektet
+
+    System
+            Design
+                - Planen er å lage noe som kan ligne på de gamle "space-shooters" fra Atari-tiden. Dette er noe som jeg
+                  tror kan passe godt med hvordan objektene har mulighet til å bevege seg rundt i kordinatsystemet mtp.
+                  360 grader osv. For å få til dette må der være romskip, planen er å få laget 2 forskjellige skip med
+                  litt forskjellige oppførsel. Jeg tenker at det ene skipet kan være et som hovedsaklig vil jakte på
+                  den andre typen skip. Dette skal få være det tregeste objektet i simuleringen slik at det andre skipet
+                  har mulighet for å kunne overleve. Skip nr.2 skal være mer agilt enn det første og dermed ha litt
+                  raskere fart og retningjusteringer. Jeg tenkte at dette skipet ikke skal utgjøre en trussel til skip nr.1
+                  direkte men kan prøve å ødlegge meteorer som kommer flygende inn, som igjen vil kunne treffe begge skipene,
+                  men siden skip nr.1 er tregere vil det ha større sannsynlighet for å treffe dette. Merk derimot at begge
+                  skipene har mulighet til å "se" meteorer og vil prøve å unnvike dem. Dette vil si at jeg også vil ha et 
+                  objekt som representerer meteorer. Planen er at meteorer skal virke som de kommer flygende fra ingen plass
+                  og har som i tidlige atari spill muligheten for å explodere til mindre meteorer. Meteorene skal og ha 
+                  mulighet til å kunne kresje med hverandre og deretter forandre retning. All denneoppførselen vil kreve
+                  at jeg får laget et objekt som kan oppføre seg som prosjektiler som skipene skal kunne skyte. 
+                  Alle bevegende ting skal ha en livs-variabel, og vil kunne ha metoder som øk/senk liv osv. Om denne
+                  utnyttes i objektene vil variere, i utgangspunktet tenker jeg at skipene og meteorene vil ha liv der det 
+                  skjer noe om denne verdien treffer 0. Skip nr.1 skal bare forsvinne ved liv 0, skip nr.2 skal opprette 
+                  noe som kan konsumerest av skip nr.1. SimMeteor skal eksplodere ved liv 0 (eller hard kollisjon), og om
+                  meteorene som kom etter eksplosojnen dør skal det opprettes noe som kan konsumerest av skip nr.2.
+                  (Se ferdig oversikt over oppførsel og regler lenger nede)
+            
+            Implementasjonsvalg
+                - Startet med å lage en klasse som senere ble SimHunter når riktig grafikk hadde blitt lagt på. Oppførselen
+                  ble definert gjennom step()-metoden og tok i bruk hjelpemetoder i en ny klasse jeg laget; SimObjectHelper.
+                  Denne hjelpeklassen laget jeg etter jeg såg at SimHunter og SimPrey, som er klasser som ligner på hverandre,
+                  trengte mye av samme informasjonen for å definere sin egen oppførsel. I denne klassen la jeg til statiske
+                  metoder som klassene jeg hadde laget kunne bruke -> i tillegg la jeg til ekstra metoder i denne etterhvert
+                  som det kom nye objekter, dette mye redundans i de forskjellige klassene. Både SimHunter og SimPrey fikk en
+                  synsvinkel på 180 grader (ved hjelp av angleDifference metoden jeg implementerte i Direction), så hva som
+                  "interesant" osv avhenger av avstandbegrensning og denne vinkelen. Et unntak er at SimPrey vil merke at 
+                  SimHunter nærmer seg. Jeg valgte heretter å lage en prosjektil-klasse som hadde to forskjellige oppførseler
+                  alt etter hvilken type man valgte i konstruktøren, dette gjor jeg slik at SimPrey og SimHunter kunne ha
+                  ulike "ammunisjon" som skadet ulikt. Da unngår jeg at prosjektilene fra SimHunter skader seg selv og det
+                  samme for SimPrey. Jeg valgte også her å integrere en rekkevidde slik at "kamp områdene" ble litt mer
+                  innesperret og at disse objektene ikke skadet ting på andre siden av "habitat". Så laget jeg SimMeteor
+                  klassen, her laget jeg flere konstruktører slik at jeg kunne få en til å bruke ved eksplosjonseffekten
+                  jeg ville implementere, en for bruk ved testing og en som generer ganske tilfeldige retninger og plasseringer
+                  utifra dimensjonene på "habitat". For å kunne få disse til å kresje med andre objekt la jeg til nye
+                  hjelpemetoder i SimObjectHelper slik at klassen nå fikk mulighet til å vite nærmeste romskip og meteor.
+                  Felles for både SimProjectile og SimMeteor er at de kaller det nye "decreaseHealth(..)" metodene på
+                  objektene de treffer, dette gjor jeg slik at ikke både den som "skal" treffe og den som blir truffet
+                  må holde rede på det. Dette lettet kodearbeidet og gjor ting ryddigere. Til slutt laget jeg SimGoldStar
+                  og SimSilverStar slik at både SimHunter og SimPrey hadde sine separate ting å kunne overleve på. Her la
+                  jeg til en teller som holder rede på hvor lang "holdbarhet" det skal være på objektet -> slik at det ikke
+                  blir mye oppsamlet i habitat over tid (gjør ting litt vanskligere for romskipene). Ellers valgte jeg å
+                  forandre litt på dimensjonene i SimMain for å få litt større "pusterom" noe som såg naturlig ut i noe
+                  som skal være i verdensrommet. (Ekstra dokumentasjon finnes i klassene og under)
 
     Klasseoversikt:
         SimHunter
@@ -122,7 +172,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             Siktavstand: 325
         
         - SimMeteor
-            Mål: Blir "spawnet" utenfor habitat og kommer seilende inn. Utgjør en farefaktor.
+            Mål: Blir opprettet utenfor habitat og kommer seilende inn. Utgjør en farefaktor.
             Fart: 1.5
             Liv: 1.0
             Retning: Får tilskrevet en tilfeldig retning under initialisering, forandrer bane ved
@@ -143,13 +193,6 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             Fart: 0 -> står stille
             Ekstra: Har en viss holdbarhet og vil begynne å blinke
                     når denne grensen nærmer seg.
-    
-    System
-        Design
-            - Planen er å lage noe som kan ligne på de gamle "space-shooters" fra Atari-tiden. 
-        
-        Implementasjonsvalg
-            -
 
 ## Svar på spørsmål
 
@@ -174,7 +217,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             - AbstractSimObject inneholder den grunnleggende logikken for objekt som skal simulerest i programmet, og 
             tilskriver objektene med egenskaper som posisjon, retning, dø/levende og lignende. Mens AbstractMovingObject
             er en arver fra AbstractSimObject og utvider denne med logikk som beror seg på bevegelse slik som akselerering, 
-            farten til objektet, og hva som må brukes for å reposisjonerer objektet.
+            farten til objektet, og hva som må brukes for å reposisjonere objektet.
             
         Posisjonen er lagret som en private feltvariabel, hvordan skal da subklasser justere posisjonen?
             - Posisjonsdatene blir konstruert utifra hvilke data som blir gitt fra retningsdataene (les: Direction),
@@ -229,8 +272,9 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             - Man kunne laget samme program uten interface-klasser men det er mye enklere å kunne forholde seg til disse
             siden man vet utifra grensesnittet hva klassene må inneholde av metoder. Man kan og ha definerte forklaringer
             for hvordan metodene skal fungere i samsvar med objektet som implementerer de. På denne måten fungerer grensesnittene
-            som en kontrakt som man kan forholde seg til. I tillegg måtte man uten grensesnitt definert måter å håndtere
-            hvert enkelt objekt i forskjellige situasjoner, noe som hadde blitt til veldig mye kode.
+            som en kontrakt som man kan forholde seg til. Man kan og senere velge hvilke klasser som oppfyller kravene til grensesnittene.
+            I tillegg måtte man uten grensesnitt definert måter å håndtere hvert enkelt objekt i forskjellige situasjoner, 
+            noe som hadde blitt til veldig mye kode.
 
 ## Kilder til media
     

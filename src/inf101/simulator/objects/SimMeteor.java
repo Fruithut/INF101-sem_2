@@ -140,6 +140,7 @@ public class SimMeteor extends AbstractMovingObject {
      * If the object reaches a health level of zero and is of type 0 it will explode generating
      * two new objects using meteorExplode() and then destroy itself. If health hits zero and the meteor
      * is of type 1 (after explosion) then it will place a SimSilverStar on its position and destroy itself.
+     * May explode or spawn SimSilverStar if impact is great enough.
      * It will bounce off other SimMeteors, and also off SimPreys and SimHunter (decreasing their health).
      */
     @Override

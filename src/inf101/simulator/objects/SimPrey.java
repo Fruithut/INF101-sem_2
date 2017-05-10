@@ -41,7 +41,7 @@ public class SimPrey extends AbstractMovingObject {
      * Will first move towards meteors (in range) and try to shoot them, if it gets too close it will try to avoid
      * them. Then it will try to find SimSilverStars, finally it will try to avoid SimHunters.
      * The object will turn towards the center of the habitat, unless the distance to the center is less than
-     * 400 -> if this is the case it will use the randomPath that has been generated and move elsewhere.
+     * 900 -> if this is the case it will use the randomPath that has been generated and move elsewhere.
      * (It will also move towards the center if the object is to close to the border of the habitat or outside of it.)
      * Fires SimProjectiles of type 1 -> (behaviour defined in SimProjectile-class).
      * Field of view = 180 degrees
@@ -53,15 +53,15 @@ public class SimPrey extends AbstractMovingObject {
         SimMeteor closestMeteor = SimObjectHelper.getClosestMeteor(this, habitat, 325);
         SimHunter closestHunter = SimObjectHelper.getClosestHunter(this, habitat, 325);
 
-        if (closestMeteor != null && ((dir.angleDifference(directionTo(closestMeteor)) < 90) && distanceToTouch(closestMeteor) > 100)) {
+        if (closestMeteor != null && dir.angleDifference(directionTo(closestMeteor)) < 90 && distanceToTouch(closestMeteor) > 100) {
             dir = dir.turnTowards(directionTo(closestMeteor), 2);
             if (randomGen.nextInt(70) == 0) {
                 habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 300, 1));
             }
-        } else if (closestMeteor != null && distanceToTouch(closestMeteor) <= 100) {
+        } else if (closestMeteor != null && dir.angleDifference(directionTo(closestMeteor)) < 90 && distanceToTouch(closestMeteor) <= 100) {
             dir = dir.turnTowards(SimObjectHelper.getAverageMeteorAngle(this, habitat, 325) + 180, 3);
             accelerateTo(defaultSpeed * 1.25, 0.8);
-        } else if (consumableObject != null && (dir.angleDifference(directionTo(consumableObject)) < 90)) {
+        } else if (consumableObject != null && dir.angleDifference(directionTo(consumableObject)) < 90) {
             dir = dir.turnTowards(directionTo(SimObjectHelper.getBestSilverPickup(this, habitat, 325)), 3);
             accelerateTo(defaultSpeed * 1.5, 0.8);
         } else if (closestHunter != null) {

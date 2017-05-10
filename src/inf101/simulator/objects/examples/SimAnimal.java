@@ -13,7 +13,6 @@ import java.util.Comparator;
  */
 public class SimAnimal extends AbstractMovingObject {
 	private static final double defaultSpeed = 1.0;
-	private Habitat habitat;
     
 	public SimAnimal(Position pos, Habitat hab) {
 		super(new Direction(0), pos, defaultSpeed, hab);
@@ -25,8 +24,7 @@ public class SimAnimal extends AbstractMovingObject {
                 say(event.getType());
             }
         }
-        
-		this.habitat.addListener(this, new SimListener());
+		super.habitat.addListener(this, new SimListener());
 	}
 
 	@Override

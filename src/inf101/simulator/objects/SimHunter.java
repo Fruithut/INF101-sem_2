@@ -40,7 +40,7 @@ public class SimHunter extends AbstractMovingObject {
      * The step method runs one iteration of the SimHunter's behaviour.
      * Will first try to avoid SimMeteors, then try to find SimGoldStars, then try to hunt SimPreys.
      * The object will turn towards the center of the habitat, unless the distance to the center is less than
-     * 400 -> if this is the case it will use the randomPath that has been generated and move elsewhere.
+     * 900 -> if this is the case it will use the randomPath that has been generated and move elsewhere.
      * (It will also move towards the center if the object is to close to the border of the habitat or outside of it.)
      * Fires SimProjectiles of type 0 -> (behaviour defined in SimProjectile-class).
      * Field of view = 180 degrees
@@ -52,16 +52,16 @@ public class SimHunter extends AbstractMovingObject {
         SimMeteor closestMeteor = SimObjectHelper.getClosestMeteor(this, habitat, 375);
         SimPrey closestPrey = SimObjectHelper.getClosestPrey(this, habitat, 375);
         
-        if (closestMeteor != null) {
+        if (closestMeteor != null && dir.angleDifference(directionTo(closestMeteor)) < 90) {
             dir = dir.turnTowards(SimObjectHelper.getAverageMeteorAngle(this, habitat, 375) + 180, 2);
             // accelerate when the the object has turned away from the meteors
             if (dir.angleDifference(new Direction(SimObjectHelper.getAverageMeteorAngle(this, habitat, 375) + 180)) > 120) {
                 accelerateTo(defaultSpeed * 2, 0.3);
             }
-        } else if (consumableObject != null && (dir.angleDifference(directionTo(consumableObject)) < 90)) {
+        } else if (consumableObject != null && dir.angleDifference(directionTo(consumableObject)) < 90) {
             dir = dir.turnTowards(directionTo(SimObjectHelper.getBestGoldPickup(this, habitat, 375)), 2);
             accelerateTo(defaultSpeed * 1.5, 0.3);
-        } else if (closestPrey != null && (dir.angleDifference(directionTo(closestPrey)) < 90)) {
+        } else if (closestPrey != null && dir.angleDifference(directionTo(closestPrey)) < 90) {
             dir = dir.turnTowards(directionTo(closestPrey), 2);
             if (randomGen.nextInt(50) == 0) {
                 habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 275, 0));
