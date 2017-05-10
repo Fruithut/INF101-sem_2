@@ -10,7 +10,7 @@ import java.util.Comparator;
  * a habitat to search in and a distanceLimit for the given search. This class was made to avoid duplicate
  * code and to achieve better flexibility.
  */
-class SimObjectHelper {
+public class SimObjectHelper {
 
     /**
      * Finds the average angle from the ISimObject to the meteors around it,
@@ -18,7 +18,7 @@ class SimObjectHelper {
      *
      * @return The average angle, converted from radians to degrees
      */
-    static double getAverageMeteorAngle(ISimObject from, Habitat hab, double distanceLimit) {
+    public static double getAverageMeteorAngle(ISimObject from, Habitat hab, double distanceLimit) {
         ArrayList<ISimObject> meteors = new ArrayList<>();
         double cosSum = 0, sinSum = 0;
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
@@ -39,7 +39,7 @@ class SimObjectHelper {
      *
      * @return The average angle, converted from radians to degrees
      */
-    static double getAverageHunterAngle(ISimObject from, Habitat hab, double distanceLimit) {
+    public static double getAverageHunterAngle(ISimObject from, Habitat hab, double distanceLimit) {
         ArrayList<ISimObject> hunters = new ArrayList<>();
         double cosSum = 0, sinSum = 0;
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
@@ -60,7 +60,7 @@ class SimObjectHelper {
      *
      * @return the closest 'SimMeteor' in regards to a set radius
      */
-    static SimMeteor getClosestMeteor(ISimObject from, Habitat hab, double distanceLimit) {
+    public static SimMeteor getClosestMeteor(ISimObject from, Habitat hab, double distanceLimit) {
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
             if (obj instanceof SimMeteor)
                 return (SimMeteor) obj;
@@ -75,7 +75,7 @@ class SimObjectHelper {
      *
      * @return The SimGoldStar with the highest nutritional value
      */
-    static IEdibleObject getBestGoldPickup(ISimObject from, Habitat hab, double distanceLimit) {
+    public static IEdibleObject getBestGoldPickup(ISimObject from, Habitat hab, double distanceLimit) {
         ArrayList<IEdibleObject> pickupList = new ArrayList<>();
 
         class pickupSorter implements Comparator<IEdibleObject> {
@@ -102,7 +102,7 @@ class SimObjectHelper {
      *
      * @return the closest 'SimGoldStar' in regards to a set radius
      */
-    static IEdibleObject getClosestGoldPickup(ISimObject from, Habitat hab, double distanceLimit) {
+    public static IEdibleObject getClosestGoldPickup(ISimObject from, Habitat hab, double distanceLimit) {
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
             if (obj instanceof IEdibleObject && obj instanceof SimGoldStar)
                 return (IEdibleObject) obj;
@@ -117,7 +117,7 @@ class SimObjectHelper {
      *
      * @return The SimSilverStar with the highest nutritional value
      */
-    static IEdibleObject getBestSilverPickup(ISimObject from, Habitat hab, double distanceLimit) {
+    public static IEdibleObject getBestSilverPickup(ISimObject from, Habitat hab, double distanceLimit) {
         ArrayList<IEdibleObject> pickupList = new ArrayList<>();
 
         class pickupSorter implements Comparator<IEdibleObject> {
@@ -144,7 +144,7 @@ class SimObjectHelper {
      *
      * @return the closest 'SimSilverStar' in regards to a set radius
      */
-    static IEdibleObject getClosestSilverPickup(ISimObject from, Habitat hab, double distanceLimit) {
+    public static IEdibleObject getClosestSilverPickup(ISimObject from, Habitat hab, double distanceLimit) {
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
             if (obj instanceof IEdibleObject && obj instanceof SimSilverStar)
                 return (IEdibleObject) obj;
@@ -158,7 +158,7 @@ class SimObjectHelper {
      *
      * @return the closest 'SimPrey' in regards to a set radius
      */
-    static SimPrey getClosestPrey(ISimObject from, Habitat hab, double distanceLimit) {
+    public  static SimPrey getClosestPrey(ISimObject from, Habitat hab, double distanceLimit) {
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
             if (obj instanceof SimPrey) {
                 return (SimPrey) obj;
@@ -173,7 +173,7 @@ class SimObjectHelper {
      *
      * @return the closest 'SimHunter' in regards to a set radius
      */
-    static SimHunter getClosestHunter(ISimObject from, Habitat hab, double distanceLimit) {
+    public static SimHunter getClosestHunter(ISimObject from, Habitat hab, double distanceLimit) {
         for (ISimObject obj : hab.nearbyObjects(from, from.getRadius() + distanceLimit)) {
             if (obj instanceof SimHunter) {
                 return (SimHunter) obj;
@@ -188,7 +188,7 @@ class SimObjectHelper {
      *
      * @return the closest 'ISimObject' that is either a SimPrey or SimHunter in regards to a set radius
      */
-    static ISimObject getClosestShip(ISimObject from, Habitat hab, double distanceLimit) {
+    public static ISimObject getClosestShip(ISimObject from, Habitat hab, double distanceLimit) {
         for (ISimObject object : hab.nearbyObjects(from, from.getRadius() + distanceLimit)){
             if (object instanceof SimHunter || object instanceof SimPrey) {
                 return object;

@@ -15,6 +15,8 @@ public abstract class AbstractSimObject implements ISimObject {
 	protected boolean hideAnnotations = false;
 	private String message = null;
 	private int messageTime = 0;
+	
+	// new variable
 	protected double health = 1;
 
 	public AbstractSimObject(Direction dir, Position pos) {

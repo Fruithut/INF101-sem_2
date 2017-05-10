@@ -8,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
  * Another one to place a "default" meteor on a specific point. And for "internal" use with a exploding effect.
  */
 public class SimMeteor extends AbstractMovingObject {
-    private static final double defaultSpeed = 1.5;
+    private static final double defaultSpeed = 1.75;
     private double height, width;
     private int type = 0;
 
@@ -119,7 +119,7 @@ public class SimMeteor extends AbstractMovingObject {
     /**
      * "Splits" the meteor object into two new SimMeteor-objects and sends them in two different directions
      */
-    private void meteorExplode() {
+    public void meteorExplode() {
         habitat.addObject(new SimMeteor(dir, new Position(getPosition().getX() + getRadius()/2,
                 getPosition().getY()), habitat, 50, 50));
         habitat.addObject(new SimMeteor(dir.turnBack(), new Position(getPosition().getX() - getRadius()/2,

@@ -97,16 +97,28 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                   som skal være i verdensrommet. (Ekstra dokumentasjon finnes i klassene og under)
 
     Klasseoversikt:
+        Objects in simulation:
         SimHunter
         SimPrey
         SimMeteor
         SimProjectile
         SimGoldStar
         SimSilverStar
+        
+        Helper:
         SimObjectHelper
         
-        Beskrivelse av klassehierarkiet (alt som er nytt):
-            AbstractSimObject
+        Tests:
+        SimHunterTest
+        SimPreyTest
+        SimMeteorTest
+        SimProjectileTest
+        SimGoldStarTest
+        SimSilverStarTest
+        
+    Beskrivelse av klassehierarkiet (alt som er nytt):
+        AbstractSimObject
+            Feltvariabler: double health
                 *SimGoldStar (IEdibleObject)
                     Feltvariabler: double ENERGY_FACTOR, DIAMETER, size
                                    int counter, expirationTimer
@@ -127,12 +139,16 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                                 *SimProjectile
                                     Feltvariabler: double defaultSpeed
                                                    int range, type
-            Utenforstående
-                *SimObjectHelper
-                    Feltvariabler: Ingen, kun statiske hjelpemetoder
-            Tester
-                *xxx
-                *xxx
+        Utenforstående
+            *SimObjectHelper
+                Feltvariabler: Ingen, kun statiske hjelpemetoder
+        Tester
+            *SimPreyTest
+            *SimHunterTest
+            *SimMeteorTest
+            *SimProjectileTest
+            *SimGoldStarTest
+            *SimSilverStarTest
                 
         - De nye klassene bygger videre på funksjonaliteten som allerede er i AbstractSimObject og
           i AbstractMovingObject. Det har blitt lagt til metoder i ISimObject som sier at der skal
@@ -156,6 +172,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             Liv: 1 -> maks 1.5
             Prosjektil: 1/50 sjangs for å skyte når SimPrey er innen rekkevidde
                         og er i synsfeltet (180grader). Skyter type 0.
+                        Prosjektilrekkevidde -> 275
             Vanlig retning: Går mot midten så lenge avstanden til midten er større enn 900,
                             vil ta en tilfeldig retning om den er innenfor. 
             Siktavstand: 375
@@ -167,13 +184,14 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             Liv: 1 - maks 2.0
             Prosjektil: 1/70 sjangs for å skyte når SimMeteor er innen rekkevidde
                         og er i synsfeltet (180grader). Skyter type 1.
+                        Prosjektilrekkevidde -> 300
             Vanlig retning: Går mot midten så lenge avstanden til midten er større enn 900,
                             vil ta en tilfeldig retning om den er innenfor.
             Siktavstand: 325
         
         - SimMeteor
             Mål: Blir opprettet utenfor habitat og kommer seilende inn. Utgjør en farefaktor.
-            Fart: 1.5
+            Fart: 1.75
             Liv: 1.0
             Retning: Får tilskrevet en tilfeldig retning under initialisering, forandrer bane ved
                      kollisjon med andre SimMeteors, SimPreys eller SimHunters.
@@ -277,8 +295,17 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             noe som hadde blitt til veldig mye kode.
 
 ## Kilder til media
+
+   **Grafikk:**
+
+        "Space Shooter Redux" By Kenney (http://www.kenney.nl).
+        License: https://creativecommons.org/publicdomain/zero/1.0/
+        
+        "Space Shooter Extension (250+)" By Kenney (http://www.kenney.nl).
+        License: https://creativecommons.org/publicdomain/zero/1.0/
+        
+        
+   **Ekstra**
     
-    //TODO CREDITS FOR GRAFIKK
-    
-    * Rammeverkkode: © Anya Helene Bagge (basert på tidligere utgaver, laget av Anya Helene Bagge, Anneli Weiss og andre).
-    * pipp.png, bakgrunn.png © Anya Helene Bagge, This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License
+        * Rammeverkkode: © Anya Helene Bagge (basert på tidligere utgaver, laget av Anya Helene Bagge, Anneli Weiss og andre).
+        * pipp.png, bakgrunn.png © Anya Helene Bagge, This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License

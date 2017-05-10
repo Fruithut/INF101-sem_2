@@ -55,6 +55,7 @@ public class SimPrey extends AbstractMovingObject {
 
         if (closestMeteor != null && dir.angleDifference(directionTo(closestMeteor)) < 90 && distanceToTouch(closestMeteor) > 100) {
             dir = dir.turnTowards(directionTo(closestMeteor), 2);
+            accelerateTo(defaultSpeed * 1.25, 0.8);
             if (randomGen.nextInt(70) == 0) {
                 habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 300, 1));
             }
