@@ -8,9 +8,9 @@ import javafx.scene.canvas.GraphicsContext;
  * Another one to place a "default" meteor on a specific point. And for "internal" use with a exploding effect.
  */
 public class SimMeteor extends AbstractMovingObject {
-    private static final double defaultSpeed = 1.75;
+    private static final double defaultSpeed = 2.75;
     private double height, width;
-    private int type = 0;
+    private int type = 0, hitCount = 0;
 
     /**
      * This constructor places the object outside of the viewers sight such that it creates a feeling of appearing form
@@ -120,6 +120,7 @@ public class SimMeteor extends AbstractMovingObject {
      * "Splits" the meteor object into two new SimMeteor-objects and sends them in two different directions
      */
     public void meteorExplode() {
+        if (SimMain.isSoundOn()) SimSounds.getSound(4).play();
         habitat.addObject(new SimMeteor(dir, new Position(getPosition().getX() + getRadius()/2,
                 getPosition().getY()), habitat, 50, 50));
         habitat.addObject(new SimMeteor(dir.turnBack(), new Position(getPosition().getX() - getRadius()/2,
@@ -154,13 +155,20 @@ public class SimMeteor extends AbstractMovingObject {
             SimMeteor closestMeteor = SimObjectHelper.getClosestMeteor(this, habitat, 175);
             
             if (closestShip != null && distanceToTouch(closestShip) <= 0) {
+                hitCount++;
+                if (hitCount == 1) if (SimMain.isSoundOn()) SimSounds.getSound(8).play();
                 dir = new Direction(closestShip.getDirection().toAngle() + getDirection().toAngle());
                 closestShip.decreaseHealth(0.4);
+            } else {
+                hitCount = 0;
             }
+            
             
             // collision detection for meteor impact (changes direction) 
             // may explode (type 0) or spawn IEdibleSim (type 1) if impact is too great
             if (closestMeteor != null && distanceToTouch(closestMeteor) <= 0.5) {
+                if (type == 0) if (SimMain.isSoundOn()) SimSounds.getSound(2).play();
+                if (type == 1) if (SimMain.isSoundOn()) SimSounds.getSound(3).play();
                 if (distanceTo(closestMeteor) < getRadius()*2 - 5 && type == 0 && closestMeteor.getType() == 0) meteorExplode();
                 if (distanceTo(closestMeteor) < getRadius()*2 - 5 && type == 1 && closestMeteor.getType() == 1) spawnSimSilverStar();
                 if (distanceTo(closestMeteor) < getRadius() + closestMeteor.getRadius() - 5 && type == 0 && closestMeteor.getType() == 1) meteorExplode();

@@ -67,7 +67,7 @@ public class SimMeteorTest {
     public void meteorCollidesPrey() {
         Habitat hab = new Habitat(main, 2000, 1000);
 
-        SimMeteor sim1 = new SimMeteor(new Direction(0), new Position(1000, 500), hab);
+        SimMeteor sim1 = new SimMeteor(new Direction(180), new Position(1300, 500), hab);
         SimPrey sim2 = new SimPrey(new Position(1100, 500), hab);
         hab.addObject(sim1);
         hab.addObject(sim2);

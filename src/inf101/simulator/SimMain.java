@@ -19,9 +19,13 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -43,6 +47,15 @@ public class SimMain extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	/**
+	 * Determines if sound-effects are to played or not
+	 */
+	private static boolean soundOn = false;
+
+	//Declared outside playMusic() method, garbage-collector would otherwise clean it during runtime
+	private MediaPlayer player;
+	
 	/**
 	 * Register a new object factory
 	 * 
@@ -413,6 +426,42 @@ public class SimMain extends Application {
 			habitat.height = NOMINAL_WIDTH / aspect;
 //			System.out.println("Aspect: " + aspect + ", habitat size: " + habitat.getWidth() + "x" + habitat.getHeight());
 		});
+		
+		playMusic();
+	}
+
+	/**
+	 * Tries to find the song located in the sounds folder and then plays it
+	 */
+	private void playMusic() {
+		// finds and plays backgrounds music
+		try { 
+			URL music = getClass().getResource("../simulator/sounds/dreamyflashback.mp3");
+			Media song = new Media(music.toString());
+			player = new MediaPlayer(song);
+			player.setVolume(0.25);
+			player.setCycleCount(MediaPlayer.INDEFINITE);
+			player.play();
+		} catch (Exception e) {
+			System.out.println("A soundtrack is missing! - Check folder structure");
+			// continue to play without background music
+		}
+	}
+
+	/**
+	 * Sets sounds to on or off.
+	 * @param soundOn
+	 */
+	public static void setSound(boolean soundOn) {
+		SimMain.soundOn = soundOn;
+	}
+
+	/**
+	 * 
+	 * @return a boolean based upon if sound-effects has been turned on or off
+	 */
+	public static boolean isSoundOn() {
+		return soundOn;
 	}
 
 	protected void step() {

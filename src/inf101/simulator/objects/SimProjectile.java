@@ -1,9 +1,6 @@
 package inf101.simulator.objects;
 
-import inf101.simulator.Direction;
-import inf101.simulator.Habitat;
-import inf101.simulator.MediaHelper;
-import inf101.simulator.Position;
+import inf101.simulator.*;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -11,7 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
  * start "pos", habitat and a range.
  */
 public class SimProjectile extends AbstractMovingObject {
-    private static final double defaultSpeed = 3;
+    private static final double defaultSpeed = 4.0;
     private int range, type;
 
     /**
@@ -28,6 +25,8 @@ public class SimProjectile extends AbstractMovingObject {
         this.range = range;
         this.type = type;
         checkState(this);
+        if (type == 0) if (SimMain.isSoundOn()) SimSounds.getSound(0).play();
+        if (type == 1) if (SimMain.isSoundOn()) SimSounds.getSound(1).play();
     }
     
     @Override

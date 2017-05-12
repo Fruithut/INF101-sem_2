@@ -38,7 +38,10 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
       
     SimMain:
       *Endret variabler anngående dimensjonene på habitatet (større + mindre side meny)
+      *La til en boolsk variabel for å vite om lyd effekter skal vere på (satt på fra setup)
       *La til en bakgrunn i drawBackground()-metoden
+      *La til metoder for å spille av bakgrunnmusikk og å sette lydvariabel til true/false
+       i tillegg en get metode for denne.
       
     SimAnimalAvoidingTest:
       *Ordnet på 'avoidDangerTest1' -> denne skjekker nå om avstanden fra 'faren'
@@ -92,9 +95,10 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                   må holde rede på det. Dette lettet kodearbeidet og gjor ting ryddigere. Til slutt laget jeg SimGoldStar
                   og SimSilverStar slik at både SimHunter og SimPrey hadde sine separate ting å kunne overleve på. Her la
                   jeg til en teller som holder rede på hvor lang "holdbarhet" det skal være på objektet -> slik at det ikke
-                  blir mye oppsamlet i habitat over tid (gjør ting litt vanskligere for romskipene). Ellers valgte jeg å
-                  forandre litt på dimensjonene i SimMain for å få litt større "pusterom" noe som såg naturlig ut i noe
-                  som skal være i verdensrommet. (Ekstra dokumentasjon finnes i klassene og under)
+                  blir mye oppsamlet i habitat over tid (gjør ting litt vanskligere for romskipene). Jeg å forandre litt
+                  på dimensjonene i SimMain for å få litt større "pusterom" noe som såg naturlig ut i noe som skal være i 
+                  verdensrommet. SimSounds klassen ble tilpasset fra koden jeg laget til semoppg 1, og prøver å laste inn
+                  lydfiler ved initialisering. (Ekstra dokumentasjon finnes i klassene og under)
 
     Klasseoversikt:
         Objects in simulation:
@@ -107,6 +111,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         
         Helper:
         SimObjectHelper
+        SimSounds
         
         Tests:
         SimHunterTest
@@ -131,17 +136,21 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                                            Habitat habitat
                                 *SimHunter
                                     Feltvariabler: double defaultSpeed (brukt i konstruktør)
+                                                   int deathTimer (animasjonsrelatert)
                                 *SimPrey
                                     Feltvariabler: double defaultSpeed
+                                                   int deathTimer (animasjonsrelatert)
                                 *SimMeteor
                                     Feltvariabler: double defaultSpeed, height, width
-                                                   int type
+                                                   int type, hitCount (lydrelatert)
                                 *SimProjectile
                                     Feltvariabler: double defaultSpeed
                                                    int range, type
         Utenforstående
             *SimObjectHelper
                 Feltvariabler: Ingen, kun statiske hjelpemetoder
+            *SimSounds
+                Laster inn lydfiler til bruk i simuleringen
         Tester
             *SimPreyTest
             *SimHunterTest
@@ -160,7 +169,8 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
           SimFeed i del 1 bestemt etter størrelsen på objektene -> og minker ved konsumering. Lavere i hierarkiet
           har vi SimHunter, SimPrey, SimMeteor og SimProjectile. Merk derimot at SimProjectile kun blir nyttet
           gjennom SimHunter og SimPrey, og eventuelt 'direkte' under testing. Utenom dette er der en hjelpeklasse
-          SimObjectHelper som kun har statiske hjelpemetoder til bruk sammen med de nye klassene.
+          SimObjectHelper som kun har statiske hjelpemetoder til bruk sammen med de nye klassene. Der er også en
+          SimSounds klasse som prøver å laste lydfiller når klassen blir initialisert.
     
     Feil/mangler
         - "Ingen kritiske forhåpentligvis" - Olav :)
@@ -168,7 +178,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
     Oppførsel/"Spilleregler"
         - SimHunter
             Mål: Unngå meteorer, konsumere SimGoldStars, og jakter på SimPrey til slutt.
-            Fart: min 1 - maks 2 (unntak ved å komme seg inn til habitat igjen)
+            Fart: min 2 - maks 3 (unntak ved å komme seg inn til habitat igjen)
             Liv: 1 -> maks 1.5
             Prosjektil: 1/50 sjangs for å skyte når SimPrey er innen rekkevidde
                         og er i synsfeltet (180grader). Skyter type 0.
@@ -180,7 +190,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         - SimPrey
             Mål: Jakter på meteorer og øker livet sitt ved å konsumere SimSilverStars.
                  Prøver å unngå SimHunter som "siste" prioritet.
-            Fart: min 1.5 - maks 2.25 (unntak ved å komme seg inn til habitat igjen)
+            Fart: min 2.5 - maks 3.75 (unntak ved å komme seg inn til habitat igjen)
             Liv: 1 - maks 2.0
             Prosjektil: 1/70 sjangs for å skyte når SimMeteor er innen rekkevidde
                         og er i synsfeltet (180grader). Skyter type 1.
@@ -191,7 +201,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         
         - SimMeteor
             Mål: Blir opprettet utenfor habitat og kommer seilende inn. Utgjør en farefaktor.
-            Fart: 1.75
+            Fart: 2.75
             Liv: 1.0
             Retning: Får tilskrevet en tilfeldig retning under initialisering, forandrer bane ved
                      kollisjon med andre SimMeteors, SimPreys eller SimHunters.
@@ -202,7 +212,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             Mål: Skade objekter i sin egen bane alt etter type prosjektil.
                  Type 0 -> Skader SimPrey og eventuelt SimMeteor
                  Type 1 -> Skader SimMeteor og eventuelt SimHunter
-            Fart: 3
+            Fart: 4
             Retning: Som den er brukt i SimHunter og SimPrey tar den retningen som "de" var i
                      under initialisering.
         
@@ -295,6 +305,39 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             noe som hadde blitt til veldig mye kode.
 
 ## Kilder til media
+
+   **Lydeffekter og musikk**
+        
+        Dreamy Flashback Kevin MacLeod (incompetech.com)
+        Licensed under Creative Commons: By Attribution 3.0 License
+        http://creativecommons.org/licenses/by/3.0/
+        
+        "hunterCrash" - By n_audioman (https://freesound.org/people/n_audioman/)
+        License: https://creativecommons.org/licenses/by/3.0/
+        
+        "laser1" - By ani_music (https://freesound.org/people/ani_music/)
+        License: https://creativecommons.org/licenses/by/3.0/
+        
+        "laser1Failure" - By moca (https://freesound.org/people/moca/)
+        License: https://creativecommons.org/publicdomain/zero/1.0/
+        
+        "laser2" - By ani_music (https://freesound.org/people/ani_music/)
+        License: https://creativecommons.org/licenses/by/3.0/
+        
+        "meteorExplode" - By smcameron (https://freesound.org/people/smcameron/)
+        License: https://creativecommons.org/licenses/by/3.0/
+        
+        "meteorHit1" - By Reitanna (https://freesound.org/people/Reitanna/)
+        License: https://creativecommons.org/publicdomain/zero/1.0/
+        
+        "meteorHit2" - By Reitanna (https://freesound.org/people/Reitanna/)
+        License: https://creativecommons.org/publicdomain/zero/1.0/
+        
+        "meteorHitShip" - By OwlStorm (https://freesound.org/people/OwlStorm/)
+        License: https://creativecommons.org/licenses/by/3.0/
+        
+        "preyCrash" - By n_audioman (https://freesound.org/people/n_audioman/)
+        License: https://creativecommons.org/publicdomain/zero/1.0/
 
    **Grafikk:**
 

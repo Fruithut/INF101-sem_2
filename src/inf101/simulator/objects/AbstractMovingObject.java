@@ -4,6 +4,7 @@ import inf101.simulator.Direction;
 import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.SimMain;
+import inf101.util.generators.DirectionGenerator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -15,9 +16,9 @@ public abstract class AbstractMovingObject extends AbstractSimObject implements 
 	protected boolean exists = true;
 	
 	// new variables
-    protected Random randomGen = new Random();
-    protected Direction randomPath;
-    protected int stepCount = 0;
+	Random randomGen = new Random();
+    Direction randomPath;
+    int stepCount = 0;
     protected Habitat habitat;
 
 	public AbstractMovingObject(Direction dir, Position pos, double speed, Habitat hab) {
@@ -101,7 +102,8 @@ public abstract class AbstractMovingObject extends AbstractSimObject implements 
 	public void step() {
 	    // generate a random path every 200 steps
         if (stepCount % 200 == 0) {
-            randomPath = new Direction(randomGen.nextInt(360));
+        	DirectionGenerator newDir = new DirectionGenerator(0,360);
+            randomPath = newDir.generate();
         }
         stepCount++;
 		reposition(getPosition().move(getDirection(), getSpeed()));

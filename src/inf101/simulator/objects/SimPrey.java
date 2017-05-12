@@ -9,7 +9,8 @@ import javafx.scene.paint.Color;
  * and SimSilverStar-objects.
  */
 public class SimPrey extends AbstractMovingObject {
-    private static final double defaultSpeed = 1.5;
+    private static final double defaultSpeed = 2.5;
+    private int deathTimer = 0;
     
     public SimPrey(Position pos, Habitat hab) {
         super(new Direction(0), pos, defaultSpeed, hab);
@@ -22,8 +23,12 @@ public class SimPrey extends AbstractMovingObject {
             context.translate(0, getHeight());
             context.scale(1.0, -1.0);
         }
-        context.drawImage(MediaHelper.getImage("spaceShips_006.png"), 0, 0, getWidth(), getHeight());
-        drawBar(context, getHealth(), -1, Color.RED, Color.GREEN);
+        if (deathTimer > 0) {
+            context.drawImage(MediaHelper.getImage("smokeScreen.gif"), 0, 0, getWidth(), getWidth());
+        } else {
+            context.drawImage(MediaHelper.getImage("spaceShips_006.png"), 0, 0, getWidth(), getHeight());
+            drawBar(context, getHealth(), -1, Color.RED, Color.GREEN);
+        }
     }
 
     @Override
@@ -71,7 +76,7 @@ public class SimPrey extends AbstractMovingObject {
         } else if (getPosition().distanceTo(habitat.getCenter()) < 900) {
             dir = dir.turnTowards(randomPath, 0.5);
         } else {
-            dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.5);
+            dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.35);
         }
         
         // go towards center if we're close to the border
@@ -89,8 +94,15 @@ public class SimPrey extends AbstractMovingObject {
                 increaseHealth();
             }
         } else if (health <= 0) {
-            habitat.addObject(new SimGoldStar(getPosition(), randomGen.nextDouble()*2+0.5, 1200));
-            destroy();
+            deathTimer++;
+            accelerateTo(0,1);
+            if (deathTimer == 1) if (SimMain.isSoundOn()) SimSounds.getSound(6).play();
+            // lets a "death" animation play briefly before destroying the object
+            if (deathTimer > 60) {
+                habitat.addObject(new SimGoldStar(getPosition(), randomGen.nextDouble()*2+0.5, 1200));
+                destroy();
+                deathTimer = 0;
+            }
         }
         
         accelerateTo(defaultSpeed, 0.1);

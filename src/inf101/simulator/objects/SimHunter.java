@@ -9,10 +9,20 @@ import javafx.scene.paint.Color;
  * and SimGoldStar-objects.
  */
 public class SimHunter extends AbstractMovingObject {
-    private static final double defaultSpeed = 1.0;
+    private static final double defaultSpeed = 2.0;
+    private int deathTimer = 0;
 
     public SimHunter(Position pos, Habitat hab) {
         super(new Direction(0), pos, defaultSpeed, hab);
+
+        // anonymous class for event-listener implementation
+        class SimListener implements ISimListener {
+            @Override
+            public void eventHappened(SimEvent event) {
+                say(event.getType());
+            }
+        }
+        habitat.addListener(this, new SimListener());
     }
 
     @Override
@@ -22,8 +32,12 @@ public class SimHunter extends AbstractMovingObject {
             context.translate(0, getHeight());
             context.scale(1.0, -1.0);
         }
-        context.drawImage(MediaHelper.getImage("playerShip2_green.png"), 0, 0, getWidth(), getHeight());
-        drawBar(context, getHealth(), -1, Color.RED, Color.GREEN);
+        if (deathTimer > 0) {
+            context.drawImage(MediaHelper.getImage("smokeScreen.gif"), 0, 0, getWidth(), getWidth());
+        } else {
+            context.drawImage(MediaHelper.getImage("playerShip2_green.png"), 0, 0, getWidth(), getHeight());
+            drawBar(context, getHealth(), -1, Color.RED, Color.GREEN);
+        }
     }
 
     @Override
@@ -56,7 +70,7 @@ public class SimHunter extends AbstractMovingObject {
             dir = dir.turnTowards(SimObjectHelper.getAverageMeteorAngle(this, habitat, 375) + 180, 2);
             // accelerate when the the object has turned away from the meteors
             if (dir.angleDifference(new Direction(SimObjectHelper.getAverageMeteorAngle(this, habitat, 375) + 180)) > 120) {
-                accelerateTo(defaultSpeed * 2, 0.3);
+                accelerateTo(defaultSpeed * 1.5, 0.3);
             }
         } else if (consumableObject != null && dir.angleDifference(directionTo(consumableObject)) < 90) {
             dir = dir.turnTowards(directionTo(SimObjectHelper.getBestGoldPickup(this, habitat, 375)), 2);
@@ -64,12 +78,19 @@ public class SimHunter extends AbstractMovingObject {
         } else if (closestPrey != null && dir.angleDifference(directionTo(closestPrey)) < 90) {
             dir = dir.turnTowards(directionTo(closestPrey), 2);
             if (randomGen.nextInt(50) == 0) {
-                habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 275, 0));
+                // fun code for "system failure"
+                if (randomGen.nextInt(500) == 0) {
+                    if (SimMain.isSoundOn()) SimSounds.getSound(5).play();
+                    say("%$@#!");
+                    habitat.triggerEvent(new SimEvent(this, "HAHA", null, null), 500);
+                } else {
+                    habitat.addObject(new SimProjectile(getDirection(), getPosition(), habitat, 275, 0)); 
+                }
             }
         } else if (getPosition().distanceTo(habitat.getCenter()) < 900) {
             dir = dir.turnTowards(randomPath, 0.5);
         } else {
-            dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.5);
+            dir = dir.turnTowards(directionTo(habitat.getCenter()), 0.35);
         }
 
         // go towards center if we're close to the border
@@ -87,7 +108,14 @@ public class SimHunter extends AbstractMovingObject {
                 increaseHealth();
             }
         } else if (health <= 0) {
-            destroy();
+            deathTimer++;
+            accelerateTo(0,1);
+            if (deathTimer == 1) if (SimMain.isSoundOn()) SimSounds.getSound(7).play();
+            // lets a "death" animation play briefly before destroying the object
+            if (deathTimer > 60) {
+                destroy();
+                deathTimer = 0;
+            }
         }
         
         accelerateTo(defaultSpeed, 0.1);

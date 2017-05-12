@@ -95,7 +95,7 @@ public class SimPreyTest {
         hab.addObject(starSilver2);
 
         Direction correct = sim1.getPosition().directionTo(starSilver2.getPosition());
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             hab.step();
         }
         

@@ -32,6 +32,9 @@ public class Setup {
                 "SimRepellant™", SimRepellant.PAINTER);
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimAnimal(pos,hab), 
 				"SimAnimal", "pipp.png");*/
+
+		//Loads sound-fx and turns sound on for the simulation (variable in SimMain)
+		SimSounds soundOn = new SimSounds();
 		
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimHunter(pos,hab),
 				"SimHunter", "playerShip2_green.png");
@@ -55,11 +58,11 @@ public class Setup {
 		}
 
 		if (main.getRandom().nextInt(1000) == 0) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 6; i++) {
 				habitat.addObject(new SimPrey(new Position(main.getRandom().nextInt(1900),
 						main.getRandom().nextInt(950)), habitat));
 			}
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 3; i++) {
 				habitat.addObject(new SimHunter(new Position(main.getRandom().nextInt(1900),
 						main.getRandom().nextInt(950)), habitat));
 			}
