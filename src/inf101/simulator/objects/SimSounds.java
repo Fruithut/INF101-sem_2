@@ -35,7 +35,7 @@ public class SimSounds {
             meteorExplode.setVolume(0.4);
             preyCrash.setVolume(0.1);
             hunterCrash.setVolume(0.2);
-            meteorHitShip.setVolume(0.7);
+            meteorHitShip.setVolume(0.8);
 
             soundList.add(type0Laser);
             soundList.add(type1Laser);

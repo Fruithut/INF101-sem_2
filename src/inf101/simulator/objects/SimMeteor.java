@@ -34,7 +34,7 @@ public class SimMeteor extends AbstractMovingObject {
      * @param placeHolder just to differentiate two constructors^
      */
     public SimMeteor(Habitat hab, String placeHolder) {
-        super(new Direction(270), new Position(SimMain.getInstance().getRandom().nextInt((int) (hab.getWidth()*1.1)), SimMain.NOMINAL_WIDTH/2+100), defaultSpeed, hab);
+        super(new Direction(270), new Position(SimMain.getInstance().getRandom().nextInt((int) (hab.getWidth()*1.1)), hab.getHeight()+100), defaultSpeed, hab);
         this.height = 120;
         this.width = 120;
         dir = dir.turnTowards(directionTo(new Position((double) randomGen.nextInt((int) hab.getWidth()),

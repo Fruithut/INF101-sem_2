@@ -15,8 +15,8 @@ public class SimUfo extends AbstractMovingObject {
      * @param hab habitat to be placed in
      */
     public SimUfo(Habitat hab) {
-        super(new Direction(0), new Position(-100, SimMain.getInstance().getRandom().nextInt((int) SimMain.NOMINAL_WIDTH/2 - 100) + 100), defaultSpeed, hab);
-        if (SimMain.isSoundOn()) SimSounds.getSound(9).play();
+        super(new Direction(0), new Position(-100, 
+                SimMain.getInstance().getRandom().nextInt((int) hab.getHeight() - 100) + 100), defaultSpeed, hab);
     }
 
     @Override
@@ -42,6 +42,7 @@ public class SimUfo extends AbstractMovingObject {
      */
     @Override
     public void step() {
+        if (stepCount == 1) if (SimMain.isSoundOn()) SimSounds.getSound(9).play();
         if (stepCount % 200 == 0) habitat.addObject(new SimSilverStar(getPosition(), 3, 1200));
         if (stepCount % 400 == 0) habitat.addObject(new SimGoldStar(getPosition(), 3, 1200));
         super.step();
