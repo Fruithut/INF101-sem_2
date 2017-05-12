@@ -70,7 +70,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                   skjer noe om denne verdien treffer 0. Skip nr.1 skal bare forsvinne ved liv 0, skip nr.2 skal opprette 
                   noe som kan konsumerest av skip nr.1. SimMeteor skal eksplodere ved liv 0 (eller hard kollisjon), og om
                   meteorene som kom etter eksplosojnen dør skal det opprettes noe som kan konsumerest av skip nr.2.
-                  (Se ferdig oversikt over oppførsel og regler lenger nede)
+                  (Se komplett oversikt over oppførsel og regler lenger nede)
             
             Implementasjonsvalg
                 - Startet med å lage en klasse som senere ble SimHunter når riktig grafikk hadde blitt lagt på. Oppførselen
@@ -95,10 +95,11 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                   må holde rede på det. Dette lettet kodearbeidet og gjor ting ryddigere. Til slutt laget jeg SimGoldStar
                   og SimSilverStar slik at både SimHunter og SimPrey hadde sine separate ting å kunne overleve på. Her la
                   jeg til en teller som holder rede på hvor lang "holdbarhet" det skal være på objektet -> slik at det ikke
-                  blir mye oppsamlet i habitat over tid (gjør ting litt vanskligere for romskipene). Jeg å forandre litt
+                  blir mye oppsamlet i habitat over tid (gjør ting litt vanskligere for romskipene). Jeg har også forandre litt
                   på dimensjonene i SimMain for å få litt større "pusterom" noe som såg naturlig ut i noe som skal være i 
-                  verdensrommet. SimSounds klassen ble tilpasset fra koden jeg laget til semoppg 1, og prøver å laste inn
-                  lydfiler ved initialisering. (Ekstra dokumentasjon finnes i klassene og under)
+                  verdensrommet. Mot slutten la jeg til en SimUfo klassen som skal "spawne" sjeldent og legger fra seg
+                  IEdibleObjects over skjermen. SimSounds klassen ble tilpasset fra koden jeg laget til semoppg 1, og 
+                  prøver å laste inn lydfiler ved initialisering. (Ekstra dokumentasjon finnes i klassene og under)
 
     Klasseoversikt:
         Objects in simulation:
@@ -106,6 +107,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         SimPrey
         SimMeteor
         SimProjectile
+        SimUfo
         SimGoldStar
         SimSilverStar
         
@@ -145,7 +147,10 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                                                    int type, hitCount (lydrelatert)
                                 *SimProjectile
                                     Feltvariabler: double defaultSpeed
-                                                   int range, type
+                                                   int range, type                
+                                *SimUfo
+                                    Feltvariabler: double defaultSpeed
+                                    
         Utenforstående
             *SimObjectHelper
                 Feltvariabler: Ingen, kun statiske hjelpemetoder
@@ -167,7 +172,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
           Fra toppen har vi SimGoldStar og SimSilverStar som utvider AbstractSimObject dette er IEdibleObjects
           som har en fast posisjon og som vil forsvinne etter et gitt antall steps. Næringsinnholdet er som med
           SimFeed i del 1 bestemt etter størrelsen på objektene -> og minker ved konsumering. Lavere i hierarkiet
-          har vi SimHunter, SimPrey, SimMeteor og SimProjectile. Merk derimot at SimProjectile kun blir nyttet
+          har vi SimHunter, SimPrey, SimUfo, SimMeteor og SimProjectile. Merk derimot at SimProjectile kun blir nyttet
           gjennom SimHunter og SimPrey, og eventuelt 'direkte' under testing. Utenom dette er der en hjelpeklasse
           SimObjectHelper som kun har statiske hjelpemetoder til bruk sammen med de nye klassene. Der er også en
           SimSounds klasse som prøver å laste lydfiller når klassen blir initialisert.
@@ -198,6 +203,12 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
             Vanlig retning: Går mot midten så lenge avstanden til midten er større enn 900,
                             vil ta en tilfeldig retning om den er innenfor.
             Siktavstand: 325
+            
+        - SimUfo
+            Mål: Sprer konsumerbare object ut til romskipene. Er relativt sjelden.
+                 Er også upåvirkbar.
+            Fart: 2.5
+            Vanlig retning: Fra venstre til høyre.
         
         - SimMeteor
             Mål: Blir opprettet utenfor habitat og kommer seilende inn. Utgjør en farefaktor.
@@ -338,6 +349,9 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         
         "preyCrash" - By n_audioman (https://freesound.org/people/n_audioman/)
         License: https://creativecommons.org/publicdomain/zero/1.0/
+        
+        "ufoPassing" - By JohnsonBrandEditing (https://freesound.org/people/JohnsonBrandEditing/)
+        License: https://creativecommons.org/publicdomain/zero/1.0/
 
    **Grafikk:**
 
@@ -349,6 +363,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
         
         
    **Ekstra**
-    
+        
+        * The angleDifference()- and averageAngle..() methods - was inspired by Anya's tips section and the links that followed
         * Rammeverkkode: © Anya Helene Bagge (basert på tidligere utgaver, laget av Anya Helene Bagge, Anneli Weiss og andre).
         * pipp.png, bakgrunn.png © Anya Helene Bagge, This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License

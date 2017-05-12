@@ -257,9 +257,6 @@ public class Direction {
         double a = angleDeg, b = other.toAngle(), 
                 clockwiseResult = (a - b + 360) % 360,
                 counterClockwiseResult = (b - a + 360) % 360;
-        //TODO: REMOVE PRINTS LATER (ONLY FOR TESTING)
-        //System.out.println("-->" + clockwiseResult);
-        //System.out.println("<--" + counterClockwiseResult);
         return Math.min(clockwiseResult, counterClockwiseResult);
 	}
 }

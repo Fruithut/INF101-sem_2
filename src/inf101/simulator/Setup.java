@@ -47,7 +47,9 @@ public class Setup {
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimMeteor(hab),
 				"SimMeteor", "spaceMeteors_up.png");
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimMeteor(hab, "down"),
-				"SimMeteor", "spaceMeteors_down.png");
+                "SimMeteor", "spaceMeteors_down.png");
+        SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimUfo(hab),
+                "SimUfo", "ufoYellow.png");
 	}
 
 	/**
@@ -60,6 +62,10 @@ public class Setup {
 			habitat.addObject(new SimMeteor(habitat));
 			habitat.addObject(new SimMeteor(habitat, "down"));
 		}
+
+        if (main.getRandom().nextInt(5000) == 0) {
+		    habitat.addObject(new SimUfo(habitat));
+        }
 
 		if (main.getRandom().nextInt(1000) == 0) {
 			for (int i = 0; i < 6; i++) {

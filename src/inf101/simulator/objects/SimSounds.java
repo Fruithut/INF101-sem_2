@@ -25,6 +25,7 @@ public class SimSounds {
             AudioClip preyCrash = new AudioClip(getClass().getResource("../sounds/preyCrash.wav").toString());
             AudioClip hunterCrash = new AudioClip(getClass().getResource("../sounds/hunterCrash.wav").toString());
             AudioClip meteorHitShip = new AudioClip(getClass().getResource("../sounds/meteorHitShip.wav").toString());
+            AudioClip ufoPassby = new AudioClip(getClass().getResource("../sounds/ufoPassing.mp3").toString());
             
             //Adjust volume
             type0Laser.setVolume(0.25);
@@ -45,6 +46,7 @@ public class SimSounds {
             soundList.add(preyCrash);
             soundList.add(hunterCrash);
             soundList.add(meteorHitShip);
+            soundList.add(ufoPassby);
         } catch (Exception e) {
             System.out.println("An sfx-file is missing or has been altered!");
             System.out.println("Cancel out sfx from 'Setup' by commenting out SimSounds");
