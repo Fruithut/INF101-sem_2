@@ -87,7 +87,7 @@ E-mail: fruithut@gmail.com / ogj005@student.uib.no
                   samme for SimPrey. Jeg valgte også her å integrere en rekkevidde slik at "kamp områdene" ble litt mer
                   innesperret og at disse objektene ikke skadet ting på andre siden av "habitat". Så laget jeg SimMeteor
                   klassen, her laget jeg flere konstruktører slik at jeg kunne få en til å bruke ved eksplosjonseffekten
-                  jeg ville implementere, en for bruk ved testing og en som generer ganske tilfeldige retninger og plasseringer
+                  jeg ville implementere, en for bruk ved testing og to som generer ganske tilfeldige retninger og plasseringer
                   utifra dimensjonene på "habitat". For å kunne få disse til å kresje med andre objekt la jeg til nye
                   hjelpemetoder i SimObjectHelper slik at klassen nå fikk mulighet til å vite nærmeste romskip og meteor.
                   Felles for både SimProjectile og SimMeteor er at de kaller det nye "decreaseHealth(..)" metodene på

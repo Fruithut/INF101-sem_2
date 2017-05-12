@@ -427,7 +427,8 @@ public class SimMain extends Application {
 //			System.out.println("Aspect: " + aspect + ", habitat size: " + habitat.getWidth() + "x" + habitat.getHeight());
 		});
 		
-		playMusic();
+		if (isSoundOn()) 
+			playMusic();
 	}
 
 	/**
@@ -439,7 +440,7 @@ public class SimMain extends Application {
 			URL music = getClass().getResource("../simulator/sounds/dreamyflashback.mp3");
 			Media song = new Media(music.toString());
 			player = new MediaPlayer(song);
-			player.setVolume(0.25);
+			player.setVolume(0.4);
 			player.setCycleCount(MediaPlayer.INDEFINITE);
 			player.play();
 		} catch (Exception e) {

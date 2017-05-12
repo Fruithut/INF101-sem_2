@@ -1,8 +1,7 @@
 package inf101.simulator.objects;
 
-import inf101.simulator.Direction;
-import inf101.simulator.Position;
-import inf101.simulator.SimMain;
+import inf101.simulator.*;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
@@ -238,7 +237,7 @@ public abstract class AbstractSimObject implements ISimObject {
 	 */
 	protected void say(String message) {
 		this.message = message;
-		this.messageTime = 75;
+		this.messageTime = 150;
 	}
 
 	@Override

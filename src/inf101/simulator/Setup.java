@@ -45,7 +45,9 @@ public class Setup {
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimSilverStar(pos,
 				main.getRandom().nextDouble()*2+0.5, 1200),"SimSilverStar", "star_silver.png");
 		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimMeteor(hab),
-				"SimMeteor", "spaceMeteors_004.png");
+				"SimMeteor", "spaceMeteors_up.png");
+		SimMain.registerSimObjectFactory((Position pos, Habitat hab) -> new SimMeteor(hab, "down"),
+				"SimMeteor", "spaceMeteors_down.png");
 	}
 
 	/**
@@ -53,8 +55,10 @@ public class Setup {
 	 * random intervals
 	 */
 	public static void step(SimMain main, Habitat habitat) {
-		if (main.getRandom().nextInt(50) == 0) {
+		//spawns meteors from both direction (above/under)
+		if (main.getRandom().nextInt(100) == 0) {
 			habitat.addObject(new SimMeteor(habitat));
+			habitat.addObject(new SimMeteor(habitat, "down"));
 		}
 
 		if (main.getRandom().nextInt(1000) == 0) {

@@ -29,6 +29,19 @@ public class SimMeteor extends AbstractMovingObject {
     }
 
     /**
+     * Same as the one above only that this one launches meteors from above the habitat
+     * @param hab Habitat to be placed in
+     * @param placeHolder just to differentiate two constructors^
+     */
+    public SimMeteor(Habitat hab, String placeHolder) {
+        super(new Direction(270), new Position(SimMain.getInstance().getRandom().nextInt((int) (hab.getWidth()*1.1)), SimMain.NOMINAL_WIDTH/2+100), defaultSpeed, hab);
+        this.height = 120;
+        this.width = 120;
+        dir = dir.turnTowards(directionTo(new Position((double) randomGen.nextInt((int) hab.getWidth()),
+                (double) randomGen.nextInt((int) hab.getWidth()/2) + 200)), 180);
+    }
+
+    /**
      * Easier to use for testing purposes, standard height, width and defaultSpeed.
      * @param dir direction of the object
      * @param pos initial position of the object

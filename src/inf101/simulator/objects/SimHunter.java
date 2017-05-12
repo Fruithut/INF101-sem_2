@@ -79,7 +79,7 @@ public class SimHunter extends AbstractMovingObject {
             dir = dir.turnTowards(directionTo(closestPrey), 2);
             if (randomGen.nextInt(50) == 0) {
                 // fun code for "system failure"
-                if (randomGen.nextInt(500) == 0) {
+                if (randomGen.nextInt(200) == 0) {
                     if (SimMain.isSoundOn()) SimSounds.getSound(5).play();
                     say("%$@#!");
                     habitat.triggerEvent(new SimEvent(this, "HAHA", null, null), 500);
