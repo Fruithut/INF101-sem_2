@@ -1,9 +1,9 @@
 package inf101.util.generators;
 
-import java.util.Random;
-
 import inf101.simulator.Position;
 import inf101.util.IGenerator;
+
+import java.util.Random;
 
 public class PositionGenerator extends AbstractGenerator<Position> {
 	private final IGenerator<Double> gen;

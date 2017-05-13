@@ -1,14 +1,13 @@
 package inf101.tests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.SimMain;
 import inf101.simulator.objects.examples.SimAnimal;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class SimAnimalTest {
 	private SimMain main;

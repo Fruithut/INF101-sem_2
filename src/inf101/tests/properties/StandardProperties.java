@@ -1,10 +1,10 @@
 package inf101.tests.properties;
 
-import static org.junit.Assert.assertEquals;
+import inf101.util.IGenerator;
 
 import java.util.List;
 
-import inf101.util.IGenerator;
+import static org.junit.Assert.assertEquals;
 
 public class StandardProperties {
 	/**

@@ -1,13 +1,12 @@
 package inf101.simulator.objects.examples;
 
-import java.util.function.Consumer;
-
 import inf101.simulator.Direction;
 import inf101.simulator.GraphicsHelper;
 import inf101.simulator.Position;
 import inf101.simulator.objects.AbstractSimObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import java.util.function.Consumer;
 
 public class SimRepellant extends AbstractSimObject {
 	private static final double DIAMETER = 50;

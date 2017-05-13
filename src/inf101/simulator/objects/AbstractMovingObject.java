@@ -1,20 +1,31 @@
 package inf101.simulator.objects;
 
 import inf101.simulator.Direction;
+import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.SimMain;
+import inf101.util.generators.DirectionGenerator;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 
+import java.util.Random;
+
 public abstract class AbstractMovingObject extends AbstractSimObject implements IMovingObject {
 	protected double speed;
 	protected boolean exists = true;
+	
+	// new variables
+	Random randomGen = new Random();
+    Direction randomPath;
+    int stepCount = 0;
+    protected Habitat habitat;
 
-	public AbstractMovingObject(Direction dir, Position pos, double speed) {
+	public AbstractMovingObject(Direction dir, Position pos, double speed, Habitat hab) {
 		super(dir, pos);
-
 		this.speed = speed;
+		this.habitat = hab;
+        this.randomPath = new Direction(randomGen.nextInt(360));
 	}
 
 	/**
@@ -54,13 +65,47 @@ public abstract class AbstractMovingObject extends AbstractSimObject implements 
 		}
 	}
 
-	@Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        AbstractMovingObject that = (AbstractMovingObject) o;
+
+        if (Double.compare(that.speed, speed) != 0) return false;
+        if (exists != that.exists) return false;
+        if (stepCount != that.stepCount) return false;
+        if (!randomPath.equals(that.randomPath)) return false;
+        return habitat.equals(that.habitat);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        long temp;
+        temp = Double.doubleToLongBits(speed);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (exists ? 1 : 0);
+        result = 31 * result + randomPath.hashCode();
+        result = 31 * result + stepCount;
+        result = 31 * result + habitat.hashCode();
+        return result;
+    }
+
+    @Override
 	public double getSpeed() {
 		return speed;
 	}
 
 	@Override
 	public void step() {
+	    // generate a random path every 200 steps
+        if (stepCount % 200 == 0) {
+        	DirectionGenerator newDir = new DirectionGenerator(0,360);
+            randomPath = newDir.generate();
+        }
+        stepCount++;
 		reposition(getPosition().move(getDirection(), getSpeed()));
 	}
 }

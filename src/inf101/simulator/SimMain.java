@@ -1,10 +1,5 @@
 package inf101.simulator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.function.Consumer;
-
 import inf101.simulator.objects.ISimObjectFactory;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -22,26 +17,28 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * @author anya
  *
  */
 public class SimMain extends Application {
-	public static final double NOMINAL_WIDTH = 1900;
-	private static final double MENU_WIDTH = 100.00;
-	private static final double BUTTON_WIDTH = 75.00;
+	public static final double NOMINAL_WIDTH = 1900*2;
+	private static final double MENU_WIDTH = 100.00/1.5;
+	private static final double BUTTON_WIDTH = 75.00/1.5;
 	private static SimMain instance;
 	private static Map<String, ISimObjectFactory> factoryMap = new HashMap<>();
 	public static SimMain getInstance() {
@@ -50,6 +47,15 @@ public class SimMain extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	/**
+	 * Determines if sound-effects are to played or not
+	 */
+	private static boolean soundOn = false;
+
+	//Declared outside playMusic() method, garbage-collector would otherwise clean it during runtime
+	private MediaPlayer player;
+	
 	/**
 	 * Register a new object factory
 	 * 
@@ -185,9 +191,7 @@ public class SimMain extends Application {
 	}
 
 	private void drawBackground(GraphicsContext context) {
-		context.setFill(Color.BLACK);
-		// context.fillRect(0, 0, bgCanvas.getWidth(), bgCanvas.getHeight());
-		context.fillRect(0, 0, habitat.getWidth(), habitat.getHeight());
+		context.drawImage(MediaHelper.getImage("darkPurple.png"),0,0, habitat.getWidth(), habitat.getHeight());
 	}
 
 	/**
@@ -422,6 +426,43 @@ public class SimMain extends Application {
 			habitat.height = NOMINAL_WIDTH / aspect;
 //			System.out.println("Aspect: " + aspect + ", habitat size: " + habitat.getWidth() + "x" + habitat.getHeight());
 		});
+		
+		if (isSoundOn()) 
+			playMusic();
+	}
+
+	/**
+	 * Tries to find the song located in the sounds folder and then plays it
+	 */
+	private void playMusic() {
+		// finds and plays backgrounds music
+		try { 
+			URL music = getClass().getResource("../simulator/sounds/dreamyflashback.mp3");
+			Media song = new Media(music.toString());
+			player = new MediaPlayer(song);
+			player.setVolume(0.4);
+			player.setCycleCount(MediaPlayer.INDEFINITE);
+			player.play();
+		} catch (Exception e) {
+			System.out.println("A soundtrack is missing! - Check folder structure");
+			// continue to play without background music
+		}
+	}
+
+	/**
+	 * Sets sounds to on or off.
+	 * @param soundOn
+	 */
+	public static void setSound(boolean soundOn) {
+		SimMain.soundOn = soundOn;
+	}
+
+	/**
+	 * 
+	 * @return a boolean based upon if sound-effects has been turned on or off
+	 */
+	public static boolean isSoundOn() {
+		return soundOn;
 	}
 
 	protected void step() {

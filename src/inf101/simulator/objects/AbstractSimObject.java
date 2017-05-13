@@ -1,8 +1,6 @@
 package inf101.simulator.objects;
 
-import inf101.simulator.Direction;
-import inf101.simulator.Position;
-import inf101.simulator.SimMain;
+import inf101.simulator.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
@@ -15,6 +13,9 @@ public abstract class AbstractSimObject implements ISimObject {
 	protected boolean hideAnnotations = false;
 	private String message = null;
 	private int messageTime = 0;
+	
+	// new variable
+	protected double health = 1;
 
 	public AbstractSimObject(Direction dir, Position pos) {
 		this.dir = dir;
@@ -138,7 +139,7 @@ public abstract class AbstractSimObject implements ISimObject {
 			context.save();
 			double width = 10;
 			context.translate(0, width * offset);
-			context.setFill(lowColor.interpolate(highColor, value).deriveColor(0., 1., 1., 0.7));
+			context.setFill(lowColor.interpolate(highColor, value).deriveColor(0., 1., 1., 0.9));
 			context.fillRect(0, 0, getWidth() * value, width);
 			context.restore();
 		}
@@ -173,6 +174,26 @@ public abstract class AbstractSimObject implements ISimObject {
 	@Override
 	public double getY() {
 		return pos.getY();
+	}
+
+	@Override
+	public void decreaseHealth() {
+		health = health - 0.25;
+	}
+
+	@Override
+	public void decreaseHealth(double amount) {
+		health = health - amount;
+	}
+
+	@Override
+	public void increaseHealth() {
+		health = health + 0.015;
+	}
+
+	@Override
+	public double getHealth() {
+		return health;
 	}
 
 	@Override
@@ -215,7 +236,38 @@ public abstract class AbstractSimObject implements ISimObject {
 	 */
 	protected void say(String message) {
 		this.message = message;
-		this.messageTime = 75;
+		this.messageTime = 150;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		AbstractSimObject that = (AbstractSimObject) o;
+
+		if (exists != that.exists) return false;
+		if (hideAnnotations != that.hideAnnotations) return false;
+		if (messageTime != that.messageTime) return false;
+		if (Double.compare(that.health, health) != 0) return false;
+		if (!dir.equals(that.dir)) return false;
+		if (!pos.equals(that.pos)) return false;
+		return message != null ? message.equals(that.message) : that.message == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = dir.hashCode();
+		result = 31 * result + pos.hashCode();
+		result = 31 * result + (exists ? 1 : 0);
+		result = 31 * result + (hideAnnotations ? 1 : 0);
+		result = 31 * result + (message != null ? message.hashCode() : 0);
+		result = 31 * result + messageTime;
+		temp = Double.doubleToLongBits(health);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		return result;
 	}
 
 	@Override

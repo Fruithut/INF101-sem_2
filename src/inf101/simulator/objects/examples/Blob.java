@@ -1,17 +1,17 @@
 package inf101.simulator.objects.examples;
 
-import java.util.Random;
-
 import inf101.simulator.Direction;
+import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.objects.AbstractMovingObject;
 import javafx.scene.canvas.GraphicsContext;
+import java.util.Random;
 
 public class Blob extends AbstractMovingObject {
 	private Random r = new Random();
 
-	public Blob(Direction dir, Position pos, double speed) {
-		super(dir, pos, speed);
+	public Blob(Direction dir, Position pos, double speed, Habitat hab) {
+		super(dir, pos, speed, hab);
 	}
 
 	@Override

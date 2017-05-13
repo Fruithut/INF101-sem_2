@@ -1,11 +1,5 @@
 package inf101.simulator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import inf101.simulator.objects.ISimListener;
 import inf101.simulator.objects.ISimObject;
 import inf101.simulator.objects.SimEvent;
@@ -13,6 +7,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Habitat {
 	static class Pair<T, U> {
@@ -357,7 +356,9 @@ public class Habitat {
 		// ducks.get(i).step();
 
 		hoveredObject = null;
-		for (ISimObject obj : objects) {
+		
+		//Applied fix for "concurrentmodificationerror" - Olav
+		for (ISimObject obj : new ArrayList<>(objects)) {
 			if (obj.exists()) {
 				obj.step();
 			}
