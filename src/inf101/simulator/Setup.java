@@ -69,12 +69,10 @@ public class Setup {
 
 		if (main.getRandom().nextInt(1000) == 0) {
 			for (int i = 0; i < 6; i++) {
-				habitat.addObject(new SimPrey(new Position(main.getRandom().nextInt(1900),
-						main.getRandom().nextInt(950)), habitat));
+				habitat.addObject(new SimPrey(main.randomPos(), habitat));
 			}
 			for (int i = 0; i < 3; i++) {
-				habitat.addObject(new SimHunter(new Position(main.getRandom().nextInt(1900),
-						main.getRandom().nextInt(950)), habitat));
+				habitat.addObject(new SimHunter(main.randomPos(), habitat));
 			}
 		}
 	}
