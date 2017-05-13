@@ -51,7 +51,7 @@ public class SimAnimal extends AbstractMovingObject {
 	 * @return The IEdibleObject with the highest nutritional value
 	 */
 	public IEdibleObject getBestFood() {
-	    ArrayList<IEdibleObject> foodList = new ArrayList();
+	    ArrayList<IEdibleObject> foodList = new ArrayList<>();
 	    
 	    class foodSorter implements Comparator<IEdibleObject> {
             @Override
@@ -88,7 +88,7 @@ public class SimAnimal extends AbstractMovingObject {
      * 
      * @return The average angle, converted from radians to degrees
      */
-	public double averageRepellantAngle() {
+	private double averageRepellantAngle() {
         ArrayList<ISimObject> dangers = new ArrayList<>();
         double cosSum = 0, sinSum = 0;
         for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+175)) {
@@ -108,7 +108,7 @@ public class SimAnimal extends AbstractMovingObject {
 	 * 'SimRepellant'-object
 	 * @return the closest 'SimRepellant' in regards to a set radius
 	 */
-	public SimRepellant getClosestRepellant() {
+	private SimRepellant getClosestRepellant() {
 		for (ISimObject obj : habitat.nearbyObjects(this, getRadius()+175)) {
 			if(obj instanceof SimRepellant)
 				return (SimRepellant) obj;

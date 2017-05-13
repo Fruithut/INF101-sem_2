@@ -1,7 +1,6 @@
 package inf101.simulator.objects;
 
 import inf101.simulator.*;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;

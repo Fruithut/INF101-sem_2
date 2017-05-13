@@ -76,7 +76,7 @@ public class SimMeteor extends AbstractMovingObject {
         context.drawImage(MediaHelper.getImage("spaceMeteors_spinning.gif"), 0, 0, getWidth(), getHeight());
     }
 
-    public int getType() {
+    private int getType() {
         return type;
     }
     

@@ -4,7 +4,6 @@ import inf101.simulator.Habitat;
 import inf101.simulator.Position;
 import inf101.simulator.SimMain;
 import inf101.simulator.objects.SimSilverStar;
-import inf101.simulator.objects.SimSilverStar;
 import org.junit.Before;
 import org.junit.Test;
 

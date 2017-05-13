@@ -63,7 +63,7 @@ public class Setup {
 			habitat.addObject(new SimMeteor(habitat, "down"));
 		}
 
-        if (main.getRandom().nextInt(5000) == 0) {
+        if (main.getRandom().nextInt(6000) == 0) {
 		    habitat.addObject(new SimUfo(habitat));
         }
 
