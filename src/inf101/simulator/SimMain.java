@@ -352,6 +352,8 @@ public class SimMain extends Application {
 		Scene scene = new Scene(root, primaryScreenBounds.getWidth() / 2 - 40,
 				primaryScreenBounds.getHeight() / 2 - 100, Color.BLACK);
 		stage.setScene(scene);
+		stage.setFullScreenExitHint("");
+		stage.setFullScreen(true);
 
 		mainCanvas = new Canvas(scene.getWidth() - MENU_WIDTH, scene.getHeight());
 		mainCanvas.widthProperty().bind(Bindings.subtract(scene.widthProperty(), MENU_WIDTH));
