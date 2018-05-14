@@ -2,7 +2,6 @@
 
 # Semesteroppgave 2 – 101-meterskogen
 
-## Innleveringsfrist: 12. mai 2017 23:59:59 ([AoE](https://www.timeanddate.com/countdown/to?iso=20170512T235959&p0=3399&msg=INF101%20Semesteroppgave%202&font=sanserif&csz=1))
 ## Læringsmål
 
 Målene for denne semesteroppgaven er:
@@ -12,8 +11,6 @@ Målene for denne semesteroppgaven er:
 * Å gjøre bruk av arv og abstrakte klasser.
 * Å lage enkel dokumentasjon og forholde seg til opphavsrett.
 * Bli kjent med en del design patterns, som Factory, Observer/Listener, Singleton
-
-I denne oppgaven står du veldig fritt til å gjøre som du vil, i motsetning til tidligere oppgaver du har fått i programmering. Hvis du er usikker på hva som er "riktig", må du først og fremst prøve å ta en avgjørelse selv – og beskrive den i den medfølgende OVERVIEW-filen.
 
 ## Sjekkliste før levering:
 
@@ -33,46 +30,7 @@ I denne oppgaven står du veldig fritt til å gjøre som du vil, i motsetning ti
 
 * Prosjektet lagret i UTF-8
 
-* Sjekk [autosjekksystemet](http://retting.ii.uib.no:81/me) – at prosjektet kompilerer og testene kjører
-
-## Innlevering
-
-Oppgaven leveres inn ved å pushe til GitLab (Team → Commit → Commit and push). [Se instruksjonene fra Lab 1](https://retting.ii.uib.no/inf101/inf101v17/wikis/lab-1). Husk å få med eventuelle nye filer du har opprettet (hvis testene virker hos deg, men ikke i innleveringssystemet, er det gjerne det som er feil).
-
-Som før skal du ha et repository for oppgaven på retting.ii.uib.no. Oppgaven skal dere kunne finne i repositoriet med den følgende
-urien:
-
-    https://retting.ii.uib.no/<brukernavn>/inf101.v17.sem2.git
-
-Hvor `<brukernavn>` skal byttes ut med brukernavnet ditt på retting.ii.uib.no. Merk at
-det er nødvendig å bruke https (ssh vil ikke fungere).
-
-* Du kan levere inn så mye og ofte du vil (vi anbefaler commit og push hver gang du har gjort noe fornuftig). Versjonen som teller er den siste du pushet før innleveringsfristen.
-
-* *VIKTIG:* Hvis du ikke allerede har prøvd ut GitLab og pushing av innleveringer, må du gjøre det *tidlig*. Du kan ikke regne med å få hjelp til dette på innleveringsdagen.
-
-* Du kan selv sjekke status i [innleveringssystemet](http://retting.ii.uib.no:81/me) – det vil gi rask tilbakemelding hver gang du pusher til Gitlab, også før innleveringsfristen. Alt bør være *grønt* der.
-
-## Samarbeid
-
-Følgende former for samarbeid er OK, forutsatt at du oppgir det i README-filen:
-
-* Du kan diskutere, planlegge og konspirere design og løsninger med de andre studentene.
-
-* Dere kan se på hverandres kode og hjelpe hverandre med å finne problemer.
-
-* I tillegg kan du bruke all koden som har blitt lagt ut i løpet av kurset, eller som du har skrevet selv i dine egne oppgavebesvarelser i kurset.
-
-* Hvis du er i tvil, så spør / si ifra.
-
-Følgende er ikke OK:
-
-* Kopiere kode fra andre studenter, tidligere års innleveringer (selv om det er din egen) eller fra nettet – selv om (spesielt om!) du endrer den etterpå, og selv om du får lov av den du kopierer fra.
-
-
-Generelt:
-
-* Du er ansvarlig for all koden du leverer inn, og for at du forstår den.
+* Sjekk autosjekksystemet – at prosjektet kompilerer og testene kjører
 
 Introduksjon
 ============
@@ -446,135 +404,3 @@ Implementer designet ditt – evt. gå frem og tilbake mellom å designe og impl
 ### Tester
 
 Lag tester – du kan prøve å teste forskjellige scenarier på samme måte som de medfølgende testene.
-
-
-## Tips
-
-* Det er smart å begynne enklest mulig, og gradvis legge til mer funksjonalitet.
-
-* Hvis du vil ha komplisert oppførsel, bør de aktive tingene ha en *tilstand* (evt både tilstand og et *mål*). Tilstand kan du uttrykke med en `enum`, f.eks. `State.HUNGRY`, `State.EATING`, `State.RESTING`, `State.DEAD`, `State.ESCAPING`. I `step`-metoden, vil oppførselen så være avhengig av hvilken tilstand man er i. Husk å sørge for overganger mellom tilstandene; f.eks. hvis vekten går under 100% mens man hviler går man over til å søke mat, osv. 
-
-
-### Sammenlikning av typer
-
-Du vil treffe på flere tilfeller hvor det er nødvendig å sjekke om objekter er av / arver fra forskjellige klasser.
-
-Antakelig kjenner du allerede til <span>`instanceof`</span> fra [Semsteroppgave 1](https://retting.ii.uib.no/inf101/inf101v17/wikis/sem-1):
-
-      if(t instanceof IEdible)
-        ...
-
-Et objekt er <span>`instanceof`</span> en klasse eller interface hvis objektet er av samme klasse eller en subklasse / klasse som implementerer interfacet.
-
-Tilsvarende kan man sjekke om et objekt <span>`o`</span> er av samme klasse (eller subklasse til) som dette objektet:
-
-     if(getClass().isInstance(o))
-       ...
-
-Dette kan brukes for å finne andre ting som er av samme type – for eksempel finne likesinnede fugler som kan fly i flokk.
-
-For å sjekke spiselighet, så har mange dyr spesielle dietter: selv om man er rovdyr, spiser man som regel bare visse byttedyr, osv. Dette kan man gjøre ved å sjekke klassen til det potensielle byttet, enten som vist over, eller ved at man har en liste med de klassene man liker å spise:
-
-      public Collection<Class<?>> getFoods() {
-        ArrayList<Class<?>> ret = new ArrayList<Class<?>>();
-        ret.add(Apple.class);
-        ret.add(Pear.class);
-        ret.add(Banana.class);
-        return ret;
-      }
-
-      @Override
-      public boolean isEdible(IEdibleObject t) {
-        return t != this && t.getNutritionalValue() > 0
-               && getFoods().contains(t.getClass());
-      }
-
-Man kan selvfølgelig også sjekke mot ting lenger oppe i arvehierarkiet hvis man ikke er så nøye på maten (spiser alle dyr som er mindre enn en selv, f.eks. – eller alle dyr som allerede er døde...).
-
-
-# Tips
-
-
-## Tips 1: Arv
-
-* Hvis en metode er implementert i superklassen, og du skal ha samme oppførsel i subklassen, trenger du ikke nevne den i subklassen. Hvis du *overstyrer* oppførselen i subklassen, tenk på om du bør kalle `super.metode()` for å også få oppførselen fra superklassen (aktuelt for `step` og `draw`).
-
-* Hvis du er usikker kan du begynne uten arv, og så lage (abstrakte) superklasser med delt funksjonalitet underveis. Det er et læringsmål for oppgaven at dere får erfaring med å lage arvehierarki selv, så dere må gjøre det, selv om det teknisk sett hadde gått helt fint å løse oppgaven uten.
-
-* Du kan justere arvehierarkiet ditt underveis. Hvis du ser to subklasser har veldig like metoder, prøv å flytte dem opp. Om subklassene har større sprik i oppførselen enn du forventet, overstyr metodene i subklassene, eller merk metoden(e) som `abstract` i superklassen og tving subklassene til å implementere. Eclipse har automatiske verktøy for å flytte metoder (inkl opp og ned i arvehierarkiet) på *Refactor*-menyen.
-
-* Det er helt OK om de konkrete klassene dine er relativt enkle.  Husk den generelle INF101-regelen: hvis noe er veldig komplisert, eller hvis du har mye kode i én metode eller én klasse, så har du antakelig gjort noe feil: *“A designer knows he has achieved perfection not when there is nothing left to add, but when there is nothing left to take away.” —[Antoine de Saint-Exupery](https://en.wikipedia.org/wiki/Antoine_de_Saint-Exup%C3%A9ry)* (Ikke se på de utleverte `Habitat` og `SimMain` som eksempler her...)
-
-## Tips 2: Vinkelutregninger
-
-Det kan av og til være nyttig å finne vinkelavstanden mellom to retninger, f.eks. om du vil se om noe er innenfor synsvinkelen, eller om noe er plassert bak noe annet.
-Vinkelutregninger er litt mer komplisert enn de først gjerne ser ut, siden de "wrapper" rundt, slik at 0°=360° og 180°=-180° osv. Å bare gjøre *a - b* hjelper ikke nødvendigvis (fungerer
-fint for f.eks. *2° - -2° = 4°*, men ikke for *178° - -178° = 356°* (burde være *-4°*). Hvis vinkelavstanden er mer enn 180 må du justere med å trekke fra eller legge til 360.
-Se f.eks. hvordan vi har gjort det i `Direction.turnTowards()` (burde funke å justere før eller etter subtraksjonen). (Se forøvrig [Stack Overflow](http://stackoverflow.com/questions/16180595/find-the-angle-between-two-bearings).)
-
-Det kan lønne seg å lage en egen `Direction.diff()`-metode som implementerer dette.
-
-Et relatert spørsmål er hvordan man finner gjennomsnittet av et sett med retninger (kan være nyttig om man vil ha en flokk til å bevege seg i samme retning. Samme problem oppstår her. 
-Den letteste løsningen er å finne sinus og cosinus til alle vinklene (dvs. konvertere til enhetsvektorer), regne ut snittet av disse og konvertere tilbake til vinkel. Du finner
-trigonometriske funksjoner i `Math`-klassen – alle disse tar radianer og ikke grader, så du må konvertere vinklene dine (hjelper kanskje å legge til en metode `toRadians()` i `Direction`
-– vinkelen i radianer er allerede lagret som en feltvariabel). (Se forøvrig [Stack Overflow](http://stackoverflow.com/questions/491738/how-do-you-calculate-the-average-of-a-set-of-circular-data))
-
-## Tips 3: Events og listeners
-Listener-systemet er satt opp slik at objektet som trigger en hendelse ikke selv får beskjed om den. Dvs. at du må ha flere objekter på skjermen for å få noen effekt.
-
-* Kall addListener bare i konstruktøren – ellers blir lytteren lagt til tusenvis av ganger og systemet vil kjøre tregt
-* Så lenge din SimAnimal implements ISimListener, så bruker du den som lytte-objektet. Dvs. `addListener(this, this)` – det er en helt fornuftig måte å gjøre det på
-* Når du skal trigge en event, så trenger du et event-objekt. Det er noe som forteller om hendelsen som har skjedd. Du sender dette til triggerEvent(). Habitatet vil så sørge for å spre informasjonen til alle interesserte lyttere; dvs. den kaller alle eventHappened()-metodenen med event-objektet du laget
-* SimEvent-objektet skal ha informasjon om, hvilket sim-objekt som trigget eventen (this) + en eller annen melding / type, + evt valgfri ekstra informasjon
-* Habitatet vil sørge for å ikke sende eventen tilbake til samme objektet som trigget den, selv om den lytter. så det blir det f.eks. litt som at når en av de spiser, så roper den "her er det mat", og så "hører" de andre hva som skjer, og får et objekt med mer informasjon
-* Liknende teknikk er brukt i Habitat og SimMain for å lytte på mus- og tastetrykk
-
-## Tips 4: Ekstra canvas til å tegne på
-
-`SimMain` er satt opp med flere lagvise områder som det går an å tegne på. `Habitat` bruker "main canvas" til å tegne sim-objektene, men du kan også på egenhånd hente ut og tegne på de andre ("top", "bottom" og "background").
-
-Du finner riktig graphics context til å tegne på slik:
-```
-Canvas bottom = SimMain.getInstance().getBottomCanvas();
-GraphicsContext bottomContext = bottom.getGraphicsContext2D();
-```
-
-Programmet dere har fått utlevert bruker ikke top og bottom i det hele tatt. Dvs. at hvis du skal ha ting til å bevege seg der, må du selv legge inn i en eller annen `draw`-metode at tegneområdet blir blanket ut og at alt tegnes på nytt:
-```
-bottomContext.clearRect(0, 0, habitat.getWidth(), habitat.getHeight());
-drawMoreStuff(bottomContext);
-```
-Hvis du ikke blanker ut tegneområdet blir nye ting tegnet over gamle ting. Du kan også risikere at det blir seende litt rart ut hvis brukeren endrer størrelsen på vinduet.
-
-En ting du f.eks. kan bruke dette til, er å lage fotspor. Du kan få gamle fotspor til å blekne vekk ved å legge på "effects":
-```
-bottomContext.applyEffect(new ColorAdjust(0.0, -0.05, -0.05, 0.0));
-```
-eller ved å tegne over med nesten helt gjennomsiktig svart:
-```
-bottomContext.setFill(Color.BLACK.deriveColor(0.0, 1.0, 1.0, 1.0 / 256.0));
-bottomContext.fillRect(0, 0, habitat.getWidth(), habitat.getHeight());
-```
-
-## FAQ
-
-#### Klassehierarki
-Q: Hei, i hvilken grad bør/må man lage sitt eget klassehierarki?Har feks. tenkt til å lage en SimFox extends AbstractMovingObject. Er det godt nok å gjøre slik, eller bød/må man lage sine egne interfaces og superklasser? 🙂
-
-A: Du kan velge litt selv; benytt deg ihvertfall av de abstrkte klassene som er der; og så kan du vurdere å lage nye om du ser at du har oppførsel som går igjen i flere av klassene dine
-
-#### Hvordan bruke Comparator til å finne beste mat
-
-A: Du kan bruke komparatoren til å gjøre Collections.sort, men det går også an å finne den beste i en liste uten å sortere listen
-(hold rede på "beste" element (enten null eller første element til å begynne med), sammenlikn med hvert element i for-løkken, og oppdater hvis du finner noe som er bedre)
-
-#### ConcurrentModificationException
-
-Q: når et objekt "dør" vil jeg legge til et nytt "dødt" objekt på denne possisjonen men når jeg bruker habitat.add() krasjer bare programmet. må habitat.add() brukes på et spesielt sted ?
-
-A: Du får ikke lov å gjøre endringer på objects-listen mens for-løkken kjører (dvs. inni step-metodene til objektene) – da får du ConcurrentModificationException. Av en eller annen grunn hadde jeg tenkt på det med fjerning av objekter (derav destroy()/exists()) men ikke når man skal legge til nye
-
-* Løsning: i Habitat.step(), bytt ut "for (ISimObject obj : objects) {" med "for (ISimObject obj : new ArrayList<>(objects)) {" – eller la add()-metoden legge til nye objekter i en kø, som så blir overført til objects etter at for-løkken er ferdig.
-* 
-
-
