@@ -1,6 +1,5 @@
 # Oversikt
 Student: Olav Gjerde
-Brukernavn: ogj005
 E-mail: fruithut@gmail.com / ogj005@student.uib.no
 
 ## Generelle endringer angående orginal struktur og kode
